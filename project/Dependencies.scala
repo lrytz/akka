@@ -20,7 +20,7 @@ object Dependencies {
   val aeronVersion = "1.7.0"
 
   val Versions = Seq(
-    crossScalaVersions := Seq("2.11.12", "2.12.4"),
+    crossScalaVersions := Seq("2.13.0-M4-pre-20d3c21"),
     scalaVersion := System.getProperty("akka.build.scalaVersion", crossScalaVersions.value.head),
     scalaStmVersion := sys.props.get("akka.build.scalaStmVersion").getOrElse("0.8"),
     scalaCheckVersion := sys.props.get("akka.build.scalaCheckVersion").getOrElse(
@@ -69,7 +69,7 @@ object Dependencies {
     val junit = "junit" % "junit" % junitVersion // Common Public License 1.0
 
     // For Java 8 Conversions
-    val java8Compat = Def.setting { "org.scala-lang.modules" %% "scala-java8-compat" % java8CompatVersion.value } // Scala License
+    val java8Compat = Def.setting { "org.scala-lang.modules" % "scala-java8-compat_2.13.0-M3" % java8CompatVersion.value } // Scala License
 
     val aeronDriver = "io.aeron" % "aeron-driver" % aeronVersion // ApacheV2
     val aeronClient = "io.aeron" % "aeron-client" % aeronVersion // ApacheV2
