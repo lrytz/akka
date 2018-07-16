@@ -1,0 +1,31 @@
+digraph {
+  actorTests -> testkit
+  agent -> {actor testkit}
+  camel -> {actor testkit slf4j}
+  cluster -> {remote remoteTests testkit}
+  clusterMetrics -> {cluster}
+  clusterSharding -> {cluster distributedData persistence clusterTools}
+  clusterTools -> {cluster}
+  contrib -> {remote remoteTests cluster clusterTools persistence}
+  distributedData -> {cluster}
+  multiNodeTestkit -> {remote testkit}
+  osgi -> {actor}
+  persistence -> {actor testkit protobuf}
+  persistenceQuery -> {stream persistence streamTestkit}
+  persistenceShared -> {persistence testkit remote protobuf}
+  persistenceTck -> {persistence testkit}
+  remote -> {actor stream actorTests testkit streamTestkit protobuf}
+  remoteTests -> {actorTests remote streamTestkit multiNodeTestkit}
+  slf4j -> {actor testkit}
+  stream -> {actor protobuf}
+  streamTestkit -> {stream testkit}
+  streamTests -> {streamTestkit remote stream}
+  streamTestsTck -> {streamTestkit stream}
+  testkit -> {actor}
+  actorTyped -> {actor}
+  persistenceTyped -> {actorTyped persistence persistenceQuery actorTypedTests actorTestkitTyped}
+  clusterTyped -> {clusterTyped persistenceTyped clusterSharding actorTestkitTyped actorTypedTests persistenceTyped remoteTests}
+  streamTyped -> {actorTyped stream streamTestkit actorTestkitTyped actorTypedTests}
+  actorTestkitTyped -> {actorTyped testkit}
+  actorTypedTests -> {actorTyped actorTestkitTyped}
+}
