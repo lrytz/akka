@@ -26,3 +26,6 @@ addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.0.0") // for maintenance of
 
 // used for @unidoc directive
 libraryDependencies += "io.github.lukehutch" % "fast-classpath-scanner" % "2.12.3"
+
+
+addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.5.10-1-aed3e830")

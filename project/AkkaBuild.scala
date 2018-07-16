@@ -12,6 +12,8 @@ import sbt.Keys._
 import sbt._
 import scala.collection.breakOut
 
+import scalafix.sbt.ScalafixPlugin.autoImport.scalafixDepedencies
+
 object AkkaBuild {
 
   val enableMiMa = true
@@ -88,7 +90,16 @@ object AkkaBuild {
   // -XDignore.symbol.file suppresses sun.misc.Unsafe warnings
   final val DefaultJavacOptions = Seq("-encoding", "UTF-8", "-Xlint:unchecked", "-XDignore.symbol.file")
 
-  lazy val defaultSettings = resolverSettings ++
+  lazy val scalafixSettings = Seq(
+    scalacOptions += "-Yrangepos",
+    scalafixDepedencies += "org.scala-lang.modules" % "scala-collection-migrations" % "0.1-SNAPSHOT"
+  )
+
+  lazy val compatSettings = Seq(
+    libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "0.1-SNAPSHOT"
+  )
+
+  lazy val defaultSettings = scalafixSettings ++ compatSettings ++ resolverSettings ++
     TestExtras.Filter.settings ++
     Protobuf.settings ++ Seq[Setting[_]](
       // compile options
