@@ -95,11 +95,7 @@ object AkkaBuild {
     scalafixDepedencies += "org.scala-lang.modules" % "scala-collection-migrations" % "0.1-SNAPSHOT"
   )
 
-  lazy val compatSettings = Seq(
-    libraryDependencies += "org.scala-lang.modules" %% "scala-collection-compat" % "0.1-SNAPSHOT"
-  )
-
-  lazy val defaultSettings = scalafixSettings ++ compatSettings ++ resolverSettings ++
+  lazy val defaultSettings = scalafixSettings ++ resolverSettings ++
     TestExtras.Filter.settings ++
     Protobuf.settings ++ Seq[Setting[_]](
       // compile options
