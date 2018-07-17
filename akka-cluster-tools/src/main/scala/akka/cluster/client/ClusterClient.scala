@@ -39,6 +39,7 @@ import akka.remote.DeadlineFailureDetector
 import akka.dispatch.Dispatchers
 import akka.util.MessageBuffer
 import scala.collection.immutable.{ HashMap, HashSet }
+import scala.collection.compat._
 
 object ClusterClientSettings {
   /**
@@ -332,7 +333,7 @@ final class ClusterClient(settings: ClusterClientSettings) extends Actor with Ac
   val failureDetector = new DeadlineFailureDetector(acceptableHeartbeatPause, heartbeatInterval)
 
   var contactPaths: HashSet[ActorPath] =
-    initialContacts.to[HashSet]
+    initialContacts.to(HashSet)
   val initialContactsSel =
     contactPaths.map(context.actorSelection)
   var contacts = initialContactsSel
@@ -373,7 +374,7 @@ final class ClusterClient(settings: ClusterClientSettings) extends Actor with Ac
     {
       case Contacts(contactPoints) ⇒
         if (contactPoints.nonEmpty) {
-          contactPaths = contactPoints.map(ActorPath.fromString).to[HashSet]
+          contactPaths = contactPoints.map(ActorPath.fromString).to(HashSet)
           contacts = contactPaths.map(context.actorSelection)
           contacts foreach { _ ! Identify(Array.emptyByteArray) }
         }
@@ -423,7 +424,7 @@ final class ClusterClient(settings: ClusterClientSettings) extends Actor with Ac
     case Contacts(contactPoints) ⇒
       // refresh of contacts
       if (contactPoints.nonEmpty) {
-        contactPaths = contactPoints.map(ActorPath.fromString).to[HashSet]
+        contactPaths = contactPoints.map(ActorPath.fromString).to(HashSet)
         contacts = contactPaths.map(context.actorSelection)
       }
       publishContactPoints()
@@ -992,7 +993,7 @@ final class ClusterReceptionist(pubSubMediator: ActorRef, settings: ClusterRecep
 
     case SubscribeClusterClients ⇒
       val subscriber = sender()
-      subscriber ! ClusterClients(clientInteractions.keySet.to[HashSet])
+      subscriber ! ClusterClients(clientInteractions.keySet.to(HashSet))
       subscribers :+= subscriber
       context.watch(subscriber)
 
@@ -1004,7 +1005,7 @@ final class ClusterReceptionist(pubSubMediator: ActorRef, settings: ClusterRecep
       self.tell(UnsubscribeClusterClients, subscriber)
 
     case GetClusterClients ⇒
-      sender() ! ClusterClients(clientInteractions.keySet.to[HashSet])
+      sender() ! ClusterClients(clientInteractions.keySet.to(HashSet))
 
     case CheckDeadlines ⇒
       clientInteractions = clientInteractions.filter {
@@ -1025,11 +1026,11 @@ final class ClusterReceptionist(pubSubMediator: ActorRef, settings: ClusterRecep
         log.debug("Received new contact from [{}]", client.path)
         val clusterClientUp = ClusterClientUp(client)
         subscribers.foreach(_ ! clusterClientUp)
-        clientsPublished = clientInteractions.keySet.to[HashSet]
+        clientsPublished = clientInteractions.keySet.to(HashSet)
     }
 
   def publishClientsUnreachable(): Unit = {
-    val publishableClients = clientInteractions.keySet.to[HashSet]
+    val publishableClients = clientInteractions.keySet.to(HashSet)
     for (c ← clientsPublished if !publishableClients.contains(c)) {
       log.debug("Lost contact with [{}]", c.path)
       val clusterClientUnreachable = ClusterClientUnreachable(c)

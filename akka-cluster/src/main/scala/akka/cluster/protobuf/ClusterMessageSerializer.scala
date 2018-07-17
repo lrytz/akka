@@ -22,6 +22,7 @@ import akka.cluster.InternalClusterAction._
 import akka.cluster.routing.{ ClusterRouterPool, ClusterRouterPoolSettings }
 import akka.routing.Pool
 import com.typesafe.config.{ Config, ConfigFactory, ConfigRenderOptions }
+import scala.collection.compat._
 
 /**
  * INTERNAL API
@@ -358,9 +359,9 @@ final class ClusterMessageSerializer(val system: ExtendedActorSystem) extends Se
     val allMembers = gossip.members.toVector
     val allAddresses: Vector[UniqueAddress] = allMembers.map(_.uniqueAddress) ++ gossip.tombstones.keys
     val addressMapping = allAddresses.zipWithIndex.toMap
-    val allRoles = allMembers.foldLeft(Set.empty[String])((acc, m) ⇒ acc union m.roles).to[Vector]
+    val allRoles = allMembers.foldLeft(Set.empty[String])((acc, m) ⇒ acc union m.roles).to(Vector)
     val roleMapping = allRoles.zipWithIndex.toMap
-    val allHashes = gossip.version.versions.keys.to[Vector]
+    val allHashes = gossip.version.versions.keys.to(Vector)
     val hashMapping = allHashes.zipWithIndex.toMap
 
     def mapUniqueAddress(uniqueAddress: UniqueAddress): Integer = mapWithErrorMessage(addressMapping, uniqueAddress, "address")

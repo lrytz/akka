@@ -12,6 +12,8 @@ import akka.io.Udp.UdpSettings
 import akka.util.ByteString
 import akka.actor._
 
+import scala.collection.compat._
+
 /**
  * UDP Extension for Akka’s IO layer.
  *
@@ -248,6 +250,6 @@ object UdpConnectedMessage {
 
   implicit private def fromJava[T](coll: JIterable[T]): immutable.Traversable[T] = {
     import scala.collection.JavaConverters._
-    coll.asScala.to[immutable.Traversable]
+    coll.asScala.to(immutable.Traversable)
   }
 }

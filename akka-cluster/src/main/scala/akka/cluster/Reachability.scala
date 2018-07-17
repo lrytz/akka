@@ -8,6 +8,7 @@ import akka.annotation.InternalApi
 
 import scala.collection.immutable
 import scala.collection.breakOut
+import scala.collection.compat._
 
 /**
  * INTERNAL API
@@ -195,7 +196,7 @@ private[cluster] class Reachability private (
   }
 
   def remove(nodes: Iterable[UniqueAddress]): Reachability = {
-    val nodesSet = nodes.to[immutable.HashSet]
+    val nodesSet = nodes.to(immutable.HashSet)
     val newRecords = records.filterNot(r ⇒ nodesSet(r.observer) || nodesSet(r.subject))
     val newVersions = versions -- nodes
     Reachability(newRecords, newVersions)
