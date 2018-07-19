@@ -10,6 +10,7 @@ import scala.annotation.tailrec
 import scala.collection.LinearSeq
 import scala.collection.mutable.ListBuffer
 import scala.reflect.ClassTag
+import scala.collection.compat._
 
 object ByteIterator {
   object ByteArrayIterator {
@@ -229,7 +230,7 @@ object ByteIterator {
     }
 
     final override def clone: MultiByteArrayIterator = {
-      val clonedIterators: List[ByteArrayIterator] = iterators.map(_.clone)(collection.breakOut)
+      val clonedIterators: List[ByteArrayIterator] = iterators.iterator.map(_.clone).to(scala.collection.immutable.List)
       new MultiByteArrayIterator(clonedIterators)
     }
 

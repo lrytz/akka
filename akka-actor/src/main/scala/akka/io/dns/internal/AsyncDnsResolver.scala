@@ -15,7 +15,7 @@ import akka.pattern.{ ask, pipe }
 import akka.util.{ Helpers, Timeout }
 
 import scala.collection.immutable.Seq
-import scala.collection.{ breakOut, immutable }
+import scala.collection.immutable
 import scala.concurrent.Future
 import scala.util.control.NonFatal
 

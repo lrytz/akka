@@ -436,11 +436,10 @@ final class ClusterMessageSerializer(val system: ExtendedActorSystem) extends Se
     gossipStatusFromProto(cm.GossipStatus.parseFrom(bytes))
 
   private def gossipFromProto(gossip: cm.Gossip): Gossip = {
-    import scala.collection.breakOut
     val addressMapping: Vector[UniqueAddress] =
-      gossip.getAllAddressesList.asScala.map(uniqueAddressFromProto)(breakOut)
-    val roleMapping: Vector[String] = gossip.getAllRolesList.asScala.map(identity)(breakOut)
-    val hashMapping: Vector[String] = gossip.getAllHashesList.asScala.map(identity)(breakOut)
+      gossip.getAllAddressesList.asScala.iterator.map(uniqueAddressFromProto).to(scala.collection.immutable.Vector)
+    val roleMapping: Vector[String] = gossip.getAllRolesList.asScala.iterator.map(identity).to(scala.collection.immutable.Vector)
+    val hashMapping: Vector[String] = gossip.getAllHashesList.asScala.iterator.map(identity).to(scala.collection.immutable.Vector)
 
     def reachabilityFromProto(observerReachability: Iterable[cm.ObserverReachability]): Reachability = {
       val recordBuilder = new immutable.VectorBuilder[Reachability.Record]
@@ -481,20 +480,19 @@ final class ClusterMessageSerializer(val system: ExtendedActorSystem) extends Se
     def tombstoneFromProto(tombstone: cm.Tombstone): (UniqueAddress, Long) =
       (addressMapping(tombstone.getAddressIndex), tombstone.getTimestamp)
 
-    val members: immutable.SortedSet[Member] = gossip.getMembersList.asScala.map(memberFromProto)(breakOut)
+    val members: immutable.SortedSet[Member] = gossip.getMembersList.asScala.iterator.map(memberFromProto).to(scala.collection.immutable.SortedSet)
 
     val reachability = reachabilityFromProto(gossip.getOverview.getObserverReachabilityList.asScala)
-    val seen: Set[UniqueAddress] = gossip.getOverview.getSeenList.asScala.map(addressMapping(_))(breakOut)
+    val seen: Set[UniqueAddress] = gossip.getOverview.getSeenList.asScala.iterator.map(addressMapping(_)).to(scala.collection.immutable.Set)
     val overview = GossipOverview(seen, reachability)
-    val tombstones: Map[UniqueAddress, Long] = gossip.getTombstonesList.asScala.map(tombstoneFromProto)(breakOut)
+    val tombstones: Map[UniqueAddress, Long] = gossip.getTombstonesList.asScala.iterator.map(tombstoneFromProto).toMap
 
     Gossip(members, overview, vectorClockFromProto(gossip.getVersion, hashMapping), tombstones)
   }
 
   private def vectorClockFromProto(version: cm.VectorClock, hashMapping: immutable.Seq[String]) = {
-    import scala.collection.breakOut
-    VectorClock(version.getVersionsList.asScala.map(
-      v ⇒ (VectorClock.Node.fromHash(hashMapping(v.getHashIndex)), v.getTimestamp))(breakOut))
+    VectorClock(version.getVersionsList.asScala.iterator.map(
+      v ⇒ (VectorClock.Node.fromHash(hashMapping(v.getHashIndex)), v.getTimestamp)).toImmutableTreeMap)
   }
 
   private def gossipEnvelopeFromProto(envelope: cm.GossipEnvelope): GossipEnvelope = {

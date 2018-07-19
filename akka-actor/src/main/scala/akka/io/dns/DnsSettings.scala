@@ -14,9 +14,10 @@ import akka.util.JavaDurationConverters._
 import com.typesafe.config.Config
 
 import scala.collection.JavaConverters._
-import scala.collection.{ breakOut, immutable }
+import scala.collection.immutable
 import scala.concurrent.duration.FiniteDuration
 import scala.util.Try
+import scala.collection.compat._
 
 /** INTERNAL API */
 @InternalApi
@@ -31,7 +32,7 @@ private[dns] final class DnsSettings(system: ExtendedActorSystem, c: Config) {
         case address   ⇒ parseNameserverAddress(address) :: Nil
       }
     if (addrs.nonEmpty) addrs
-    else c.getStringList("nameservers").asScala.map(parseNameserverAddress)(breakOut)
+    else c.getStringList("nameservers").asScala.iterator.map(parseNameserverAddress).to(scala.collection.immutable.List)
   }
 
   val ResolveTimeout: FiniteDuration = c.getDuration("resolve-timeout").asScala

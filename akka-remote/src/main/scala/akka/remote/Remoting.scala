@@ -28,6 +28,7 @@ import akka.util.ByteString.UTF_8
 import akka.util.OptionVal
 import scala.collection.immutable
 import akka.actor.ActorInitializationException
+import scala.collection.compat._
 
 /**
  * INTERNAL API
@@ -587,7 +588,7 @@ private[remote] class EndpointManager(conf: Config, log: LoggingAdapter) extends
   val accepting: Receive = {
     case ManagementCommand(cmd) ⇒
       val allStatuses: immutable.Seq[Future[Boolean]] =
-        transportMapping.values.map(transport ⇒ transport.managementCommand(cmd))(scala.collection.breakOut)
+        transportMapping.values.iterator.map(transport ⇒ transport.managementCommand(cmd)).to(scala.collection.immutable.IndexedSeq)
       akka.compat.Future.fold(allStatuses)(true)(_ && _) map ManagementCommandAck pipeTo sender()
 
     case Quarantine(address, uidToQuarantineOption) ⇒

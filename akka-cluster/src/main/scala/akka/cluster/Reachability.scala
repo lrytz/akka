@@ -7,7 +7,6 @@ package akka.cluster
 import akka.annotation.InternalApi
 
 import scala.collection.immutable
-import scala.collection.breakOut
 import scala.collection.compat._
 
 /**
@@ -266,16 +265,16 @@ private[cluster] class Reachability private (
     observerRows(observer) match {
       case None ⇒ Set.empty
       case Some(observerRows) ⇒
-        observerRows.collect {
+        observerRows.iterator.collect {
           case (subject, record) if record.status == Unreachable ⇒ subject
-        }(breakOut)
+        }.to(scala.collection.immutable.Set)
     }
 
   def observersGroupedByUnreachable: Map[UniqueAddress, Set[UniqueAddress]] = {
     records.groupBy(_.subject).collect {
       case (subject, records) if records.exists(_.status == Unreachable) ⇒
         val observers: Set[UniqueAddress] =
-          records.collect { case r if r.status == Unreachable ⇒ r.observer }(breakOut)
+          records.iterator.collect { case r if r.status == Unreachable ⇒ r.observer }.to(scala.collection.immutable.Set)
         (subject → observers)
     }
   }

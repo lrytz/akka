@@ -16,6 +16,7 @@ import scala.collection.immutable.{ IndexedSeq, VectorBuilder }
 import scala.collection.generic.CanBuildFrom
 import scala.reflect.ClassTag
 import java.nio.charset.{ Charset, StandardCharsets }
+import scala.collection.compat._
 
 object ByteString {
 
@@ -844,7 +845,7 @@ object CompactByteString {
    */
   def apply[T](bytes: T*)(implicit num: Integral[T]): CompactByteString = {
     if (bytes.isEmpty) empty
-    else ByteString.ByteString1C(bytes.map(x ⇒ num.toInt(x).toByte)(collection.breakOut))
+    else ByteString.ByteString1C(bytes.iterator.map(x ⇒ num.toInt(x).toByte).to(scala.Array))
   }
 
   /**

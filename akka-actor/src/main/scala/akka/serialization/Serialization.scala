@@ -401,7 +401,7 @@ class Serialization(val system: ExtendedActorSystem) extends Extension {
   private val serializers: Map[String, Serializer] = {
     val fromConfig = for ((k: String, v: String) ← settings.Serializers) yield k → serializerOf(v).get
     val result = fromConfig ++ serializerDetails.map(d ⇒ d.alias → d.serializer)
-    ensureOnlyAllowedSerializers(result.map { case (_, ser) ⇒ ser }(collection.breakOut))
+    ensureOnlyAllowedSerializers(result.iterator.map { case (_, ser) ⇒ ser })
     result
   }
 
@@ -420,7 +420,7 @@ class Serialization(val system: ExtendedActorSystem) extends Extension {
     }
 
     val result = sort(fromConfig ++ fromSettings)
-    ensureOnlyAllowedSerializers(result.map { case (_, ser) ⇒ ser }(collection.breakOut))
+    ensureOnlyAllowedSerializers(result.iterator.map { case (_, ser) ⇒ ser })
     result
   }
 
