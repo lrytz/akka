@@ -17,7 +17,7 @@ object Dependencies {
   val junitVersion = "4.12"
   val sslConfigVersion = "0.2.4"
   val slf4jVersion = "1.7.25"
-  val scalaXmlVersion = "1.0.6"
+  val scalaXmlVersion = "1.1.0"
   val aeronVersion = "1.9.1"
 
   val Versions = Seq(
@@ -85,7 +85,7 @@ object Dependencies {
     val collectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "0.3.0"
 
     object Docs {
-      val sprayJson = "io.spray" %% "spray-json" % "1.3.3" % "test"
+      val sprayJson = "io.spray" %% "spray-json" % "1.3.4" % "test"
       val gson = "com.google.code.gson" % "gson" % "2.8.2" % "test"
     }
 
