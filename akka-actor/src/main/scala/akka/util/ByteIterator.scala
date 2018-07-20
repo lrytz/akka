@@ -42,7 +42,7 @@ object ByteIterator {
 
     final override def length: Int = { val l = len; clear(); l }
 
-    final override def ++(that: TraversableOnce[Byte]): ByteIterator = that match {
+    final override def ++(that: IterableOnce[Byte]): ByteIterator = that match {
       case that: ByteIterator ⇒
         if (that.isEmpty) this
         else if (this.isEmpty) that
@@ -210,7 +210,7 @@ object ByteIterator {
       this
     }
 
-    final override def ++(that: TraversableOnce[Byte]): ByteIterator = that match {
+    final override def ++(that: IterableOnce[Byte]): ByteIterator = that match {
       case that: ByteIterator ⇒
         if (that.isEmpty) this
         else if (this.isEmpty) that
@@ -396,7 +396,7 @@ abstract class ByteIterator extends BufferedIterator[Byte] {
 
   protected def clear(): Unit
 
-  def ++(that: TraversableOnce[Byte]): ByteIterator = if (that.isEmpty) this else ByteIterator.ByteArrayIterator(that.toArray)
+  def ++(that: IterableOnce[Byte]): ByteIterator = if (that.isEmpty) this else ByteIterator.ByteArrayIterator(that.toArray)
 
   // *must* be overridden by derived classes. This construction is necessary
   // to specialize the return type, as the method is already implemented in

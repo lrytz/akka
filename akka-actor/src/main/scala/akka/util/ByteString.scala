@@ -144,9 +144,9 @@ object ByteString {
   /** Java API */
   def createBuilder: ByteStringBuilder = new ByteStringBuilder
 
-  implicit val canBuildFrom: CanBuildFrom[TraversableOnce[Byte], Byte, ByteString] =
-    new CanBuildFrom[TraversableOnce[Byte], Byte, ByteString] {
-      def apply(ignore: TraversableOnce[Byte]): ByteStringBuilder = newBuilder
+  implicit val canBuildFrom: CanBuildFrom[IterableOnce[Byte], Byte, ByteString] =
+    new CanBuildFrom[IterableOnce[Byte], Byte, ByteString] {
+      def apply(ignore: IterableOnce[Byte]): ByteStringBuilder = newBuilder
       def apply(): ByteStringBuilder = newBuilder
     }
 
@@ -978,7 +978,7 @@ final class ByteStringBuilder extends Builder[Byte, ByteString] {
     this
   }
 
-  override def ++=(xs: TraversableOnce[Byte]): this.type = {
+  override def ++=(xs: IterableOnce[Byte]): this.type = {
     xs match {
       case b: ByteString if b.isEmpty ⇒
       // do nothing
