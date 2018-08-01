@@ -10,7 +10,6 @@ import java.util.Properties
 import com.typesafe.sbt.pgp.PgpKeys.publishSigned
 import sbt.Keys._
 import sbt._
-import scala.collection.breakOut
 
 import scalafix.sbt.ScalafixPlugin.autoImport.scalafixDepedencies
 
@@ -182,8 +181,8 @@ object AkkaBuild {
       javaOptions in Test := {
         val base = (javaOptions in Test).value
         val akkaSysProps: Seq[String] =
-          sys.props.filter(_._1.startsWith("akka"))
-            .map { case (key, value) ⇒ s"-D$key=$value" }(breakOut)
+          sys.props.iterator.filter(_._1.startsWith("akka"))
+            .map { case (key, value) ⇒ s"-D$key=$value" }.toSeq
 
         base ++ akkaSysProps
       },
