@@ -341,8 +341,8 @@ trait AtLeastOnceDeliveryLike extends Eventsourced {
   def setDeliverySnapshot(snapshot: AtLeastOnceDeliverySnapshot): Unit = {
     deliverySequenceNr = snapshot.currentDeliveryId
     val now = System.nanoTime()
-    unconfirmed = snapshot.unconfirmedDeliveries.iterator.map(d ⇒
-      d.deliveryId → Delivery(d.destination, d.message, now, 0)).toImmutableSortedMap
+    unconfirmed = immutable.SortedMap.from(snapshot.unconfirmedDeliveries.iterator.map(d ⇒
+      d.deliveryId → Delivery(d.destination, d.message, now, 0)))
   }
 
   /**

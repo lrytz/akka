@@ -491,8 +491,8 @@ final class ClusterMessageSerializer(val system: ExtendedActorSystem) extends Se
   }
 
   private def vectorClockFromProto(version: cm.VectorClock, hashMapping: immutable.Seq[String]) = {
-    VectorClock(version.getVersionsList.asScala.iterator.map(
-      v ⇒ (VectorClock.Node.fromHash(hashMapping(v.getHashIndex)), v.getTimestamp)).toImmutableTreeMap)
+    VectorClock(immutable.TreeMap.from(version.getVersionsList.asScala.iterator.map(
+      v ⇒ (VectorClock.Node.fromHash(hashMapping(v.getHashIndex)), v.getTimestamp))))
   }
 
   private def gossipEnvelopeFromProto(envelope: cm.GossipEnvelope): GossipEnvelope = {

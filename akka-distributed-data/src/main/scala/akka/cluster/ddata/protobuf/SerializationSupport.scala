@@ -124,8 +124,8 @@ trait SerializationSupport {
     else if (entries.size == 1)
       VersionVector(uniqueAddressFromProto(entries.get(0).getNode), entries.get(0).getVersion)
     else {
-      val versions: TreeMap[UniqueAddress, Long] = versionVector.getEntriesList.asScala.iterator.map(entry ⇒
-        uniqueAddressFromProto(entry.getNode) → entry.getVersion).toImmutableTreeMap
+      val versions: TreeMap[UniqueAddress, Long] = TreeMap.from(versionVector.getEntriesList.asScala.iterator.map(entry ⇒
+        uniqueAddressFromProto(entry.getNode) → entry.getVersion))
       VersionVector(versions)
     }
   }

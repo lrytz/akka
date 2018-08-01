@@ -154,9 +154,9 @@ private[akka] class DistributedPubSubMessageSerializer(val system: ExtendedActor
 
   private def deltaFromProto(delta: dm.Delta): Delta =
     Delta(delta.getBucketsList.asScala.toVector.map { b ⇒
-      val content: TreeMap[String, ValueHolder] = b.getContentList.asScala.iterator.map { entry ⇒
+      val content: TreeMap[String, ValueHolder] = TreeMap.from(b.getContentList.asScala.iterator.map { entry ⇒
         entry.getKey → ValueHolder(entry.getVersion, if (entry.hasRef) Some(resolveActorRef(entry.getRef)) else None)
-      }.toImmutableTreeMap
+      })
       Bucket(addressFromProto(b.getOwner), b.getVersion, content)
     })
 

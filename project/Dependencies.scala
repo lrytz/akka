@@ -82,7 +82,7 @@ object Dependencies {
     val aeronDriver = "io.aeron" % "aeron-driver" % aeronVersion // ApacheV2
     val aeronClient = "io.aeron" % "aeron-client" % aeronVersion // ApacheV2
 
-    val collectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "0.3.0"
+    val collectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "0.2.0-SNAPSHOT"
 
     object Docs {
       val sprayJson = "io.spray" %% "spray-json" % "1.3.4" % "test"
