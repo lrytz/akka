@@ -20,6 +20,8 @@ object Dependencies {
   val scalaXmlVersion = "1.1.0"
   val aeronVersion = "1.9.1"
 
+  val collectionCompatVersion = "0.2.0-SNAPSHOT"
+
   val Versions = Seq(
     crossScalaVersions := Seq("2.12.4", "2.13.0-M4", "2.11.12"),
     scalaVersion := System.getProperty("akka.build.scalaVersion", crossScalaVersions.value.head),
@@ -82,7 +84,7 @@ object Dependencies {
     val aeronDriver = "io.aeron" % "aeron-driver" % aeronVersion // ApacheV2
     val aeronClient = "io.aeron" % "aeron-client" % aeronVersion // ApacheV2
 
-    val collectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % "0.2.0-SNAPSHOT"
+    val collectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % collectionCompatVersion
 
     object Docs {
       val sprayJson = "io.spray" %% "spray-json" % "1.3.4" % "test"
