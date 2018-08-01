@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import akka.pattern.ask
 import akka.actor.ActorDSL
 import akka.actor.Props
+import scala.collection.compat._
 
 /**
  * INTERNAL API
@@ -117,7 +118,7 @@ trait Inbox { this: ActorDSL.type ⇒
           toKick.client ! Status.Failure(new TimeoutException("deadline passed"))
         }
         clients = clients.filterNot(pred)
-        clientsByTimeout = clientsByTimeout.from(Get(now))
+        clientsByTimeout = clientsByTimeout.rangeFrom(Get(now))
       case msg ⇒
         if (clients.isEmpty) enqueueMessage(msg)
         else {

@@ -961,7 +961,7 @@ final class ClusterReceptionist(pubSubMediator: ActorRef, settings: ClusterRecep
         // toStringWithAddress will use the remote address of the client
         val a = consistentHash.nodeFor(sender().path.toStringWithAddress(cluster.selfAddress))
         val slice = {
-          val first = nodes.from(a).tail.take(numberOfContacts)
+          val first = nodes.rangeFrom(a).tail.take(numberOfContacts)
           if (first.size == numberOfContacts) first
           else first union nodes.take(numberOfContacts - first.size)
         }

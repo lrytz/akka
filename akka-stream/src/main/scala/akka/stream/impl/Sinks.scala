@@ -389,7 +389,10 @@ import scala.util.{ Failure, Success, Try }
       override def pull(): Future[Option[T]] = {
         val p = Promise[Option[T]]
         callback.invokeWithFeedback(Pull(p))
-          .onFailure { case NonFatal(e) ⇒ p.tryFailure(e) }(akka.dispatch.ExecutionContexts.sameThreadExecutionContext)
+          .onComplete {
+            case scala.util.Failure(NonFatal(e)) ⇒ p.tryFailure(e)
+            case _                               ⇒ ()
+          }(akka.dispatch.ExecutionContexts.sameThreadExecutionContext)
         p.future
       }
       override def cancel(): Unit = {

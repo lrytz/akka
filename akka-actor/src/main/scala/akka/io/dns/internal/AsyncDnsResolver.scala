@@ -68,8 +68,9 @@ private[io] final class AsyncDnsResolver(
 
   private def sendQuestion(resolver: ActorRef, message: DnsQuestion): Future[Seq[ResourceRecord]] = {
     val result = (resolver ? message).mapTo[Answer].map(_.rrs)
-    result.onFailure {
-      case NonFatal(_) ⇒ resolver ! DropRequest(message.id)
+    result.onComplete {
+      case scala.util.Failure(NonFatal(_)) ⇒ resolver ! DropRequest(message.id)
+      case _                               ⇒ ()
     }
     result
   }
