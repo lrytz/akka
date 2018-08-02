@@ -30,6 +30,9 @@ object CustomReporter {
               println()
               println()
             }
+
+            println("+++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            println("count: " + problems.size)
           }
         }
         def problems: Array[Problem] = buffer.toArray
