@@ -95,6 +95,7 @@ object AkkaBuild {
   )
 
   lazy val defaultSettings = scalafixSettings ++ resolverSettings ++
+    CustomReporter.ignoreWarnings ++
     TestExtras.Filter.settings ++
     Protobuf.settings ++ Seq[Setting[_]](
       // compile options
