@@ -47,10 +47,10 @@ trait TcpIntegrationSpecSupport { _: AkkaSpec ⇒
       }
 
     /** allow overriding socket options for server side channel */
-    def bindOptions: immutable.Traversable[SocketOption] = Nil
+    def bindOptions: immutable.Iterable[SocketOption] = Nil
 
     /** allow overriding socket options for client side channel */
-    def connectOptions: immutable.Traversable[SocketOption] = Nil
+    def connectOptions: immutable.Iterable[SocketOption] = Nil
   }
 
 }

@@ -259,7 +259,7 @@ import scala.util.{ Failure, Success, Try }
 /**
  * INTERNAL API
  */
-@InternalApi private[akka] final class SeqStage[T, That](implicit cbf: CanBuildFrom[Nothing, T, That with immutable.Traversable[_]]) extends GraphStageWithMaterializedValue[SinkShape[T], Future[That]] {
+@InternalApi private[akka] final class SeqStage[T, That](implicit cbf: CanBuildFrom[Nothing, T, That with immutable.Iterable[_]]) extends GraphStageWithMaterializedValue[SinkShape[T], Future[That]] {
   val in = Inlet[T]("seq.in")
 
   override def toString: String = "SeqStage"

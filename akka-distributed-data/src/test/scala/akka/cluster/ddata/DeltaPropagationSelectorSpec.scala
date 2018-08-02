@@ -23,7 +23,7 @@ object DeltaPropagationSelectorSpec {
     override def createDeltaPropagation(deltas: Map[KeyId, (ReplicatedData, Long, Long)]): DeltaPropagation =
       DeltaPropagation(selfUniqueAddress, false, deltas.mapValues {
         case (d, fromSeqNr, toSeqNr) ⇒ Delta(DataEnvelope(d), fromSeqNr, toSeqNr)
-      })
+      }.toMap)
     override def maxDeltaSize: Int = 10
   }
 

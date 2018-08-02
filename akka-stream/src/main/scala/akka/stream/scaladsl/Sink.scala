@@ -225,7 +225,7 @@ object Sink {
    *
    * See also [[Flow.limit]], [[Flow.limitWeighted]], [[Flow.take]], [[Flow.takeWithin]], [[Flow.takeWhile]]
    */
-  def collection[T, That](implicit cbf: CanBuildFrom[Nothing, T, That with immutable.Traversable[_]]): Sink[T, Future[That]] =
+  def collection[T, That](implicit cbf: CanBuildFrom[Nothing, T, That with immutable.Iterable[_]]): Sink[T, Future[That]] =
     Sink.fromGraph(new SeqStage[T, That])
 
   /**

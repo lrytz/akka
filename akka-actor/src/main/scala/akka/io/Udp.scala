@@ -96,7 +96,7 @@ object Udp extends ExtensionId[UdpExt] with ExtensionIdProvider {
   final case class Bind(
     handler:      ActorRef,
     localAddress: InetSocketAddress,
-    options:      immutable.Traversable[SocketOption] = Nil) extends Command
+    options:      immutable.Iterable[SocketOption] = Nil) extends Command
 
   /**
    * Send this message to the listener actor that previously sent a [[Bound]]
@@ -115,7 +115,7 @@ object Udp extends ExtensionId[UdpExt] with ExtensionIdProvider {
    * The “simple sender” will not stop itself, you will have to send it a [[akka.actor.PoisonPill]]
    * when you want to close the socket.
    */
-  case class SimpleSender(options: immutable.Traversable[SocketOption] = Nil) extends Command
+  case class SimpleSender(options: immutable.Iterable[SocketOption] = Nil) extends Command
   object SimpleSender extends SimpleSender(Nil)
 
   /**
