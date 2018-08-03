@@ -16,7 +16,6 @@ import scala.collection.compat._
 import scala.collection.mutable.{ Builder, WrappedArray }
 import scala.collection.{ mutable, immutable }
 import scala.collection.immutable.{ IndexedSeq, IndexedSeqOps, VectorBuilder }
-import scala.collection.generic.CanBuildFrom
 import scala.reflect.ClassTag
 import java.nio.charset.{ Charset, StandardCharsets }
 
@@ -147,11 +146,6 @@ object ByteString {
 
   /** Java API */
   def createBuilder: ByteStringBuilder = new ByteStringBuilder
-
-  // implicit val canBuildFrom: CanBuildFrom[TraversableOnce[Byte], Byte, ByteString] =
-  //   new CanBuildFrom[TraversableOnce[Byte], Byte, ByteString] {
-  //     override def apply(ignore: TraversableOnce[Byte]): ByteStringBuilder = new ByteStringBuilder
-  //   }
 
   private[akka] object ByteString1C extends Companion {
     def fromString(s: String): ByteString1C = new ByteString1C(s.getBytes)
