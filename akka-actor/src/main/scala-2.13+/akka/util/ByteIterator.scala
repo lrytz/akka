@@ -4,6 +4,8 @@
 
 package akka.util
 
+import akka.util.Collections.EmptyImmutableSeq
+
 import java.nio.{ ByteBuffer, ByteOrder }
 
 import scala.annotation.tailrec
@@ -33,15 +35,14 @@ object ByteIterator {
 
     @inline final def head: Byte = array(from)
 
-    @throws[NoSuchElementException]
     final def next(): Byte = {
-      if (!hasNext) throw new NoSuchElementException("next on empty iterator")
+      if (!hasNext) EmptyImmutableSeq.iterator.next()
       else { val i = from; from = from + 1; array(i) }
     }
 
     def clear(): Unit = { this.array = Array.emptyByteArray; from = 0; until = from }
 
-    final override def length: Int = { val l = len; clear(); l }
+    final override def size: Int = { val l = len; clear(); l }
 
     final override def ++(that: IterableOnce[Byte]): ByteIterator = that match {
       case that: ByteIterator ⇒
@@ -90,10 +91,11 @@ object ByteIterator {
       this
     }
 
-    final override def copyToArray[B >: Byte](xs: Array[B], start: Int, len: Int): Unit = {
+    final override def copyToArray[B >: Byte](xs: Array[B], start: Int, len: Int): xs.type = {
       val n = 0 max ((xs.length - start) min this.len min len)
       Array.copy(this.array, from, xs, start, n)
       this.drop(n)
+      xs
     }
 
     final override def toByteString: ByteString = {
@@ -201,7 +203,7 @@ object ByteIterator {
 
     final override def len: Int = iterators.foldLeft(0) { _ + _.len }
 
-    final override def length: Int = {
+    final override def size: Int = {
       val result = len
       clear()
       result
@@ -285,7 +287,7 @@ object ByteIterator {
         if (dropMore) dropWhile(p) else this
       } else this
 
-    final override def copyToArray[B >: Byte](xs: Array[B], start: Int, len: Int): Unit = {
+    final override def copyToArray[B >: Byte](xs: Array[B], start: Int, len: Int): xs.type = {
       var pos = start
       var rest = len
       while ((rest > 0) && !iterators.isEmpty) {
@@ -298,6 +300,7 @@ object ByteIterator {
         }
       }
       normalize()
+      xs
     }
 
     override def foreach[@specialized U](f: Byte ⇒ U): Unit = {
@@ -316,7 +319,7 @@ object ByteIterator {
 
     @tailrec protected final def getToArray[A](xs: Array[A], offset: Int, n: Int, elemSize: Int)(getSingle: ⇒ A)(getMult: (Array[A], Int, Int) ⇒ Unit): this.type =
       if (n <= 0) this else {
-        if (isEmpty) Iterator.empty.next
+        if (isEmpty) EmptyImmutableSeq.iterator.next()
         val nDone = if (current.len >= elemSize) {
           val nCurrent = math.min(n, current.len / elemSize)
           getMult(xs, offset, nCurrent)
@@ -446,9 +449,11 @@ abstract class ByteIterator extends BufferedIterator[Byte] {
     if (found) index else -1
   }
 
-  override def indexOf(elem: Byte, from: Int = 0): Int = indexWhere(_ == elem, from)
+  def indexOf(elem: Byte): Int = indexOf(elem, 0)
+  def indexOf(elem: Byte, from: Int): Int = indexWhere(_ == elem, from)
 
-  override def indexOf[B >: Byte](elem: B, from: Int = 0): Int = indexWhere(_ == elem, from)
+  override def indexOf[B >: Byte](elem: B): Int = indexOf(elem, 0)
+  override def indexOf[B >: Byte](elem: B, from: Int): Int = indexWhere(_ == elem, from)
 
   def toByteString: ByteString
 

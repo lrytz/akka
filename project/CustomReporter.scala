@@ -12,9 +12,8 @@ object CustomReporter {
     DTask
   )
 
-  val ignoreWarnings = Seq(
-    compilerReporter in (Compile, compile) :=
-      new xsbti.Reporter {
+  private val reporter =
+    new xsbti.Reporter {
         private val buffer = collection.mutable.ArrayBuffer.empty[Problem]
         def reset(): Unit = buffer.clear()
         def hasErrors: Boolean = buffer.exists(_.severity == Severity.Error)
@@ -34,6 +33,7 @@ object CustomReporter {
             println("+++++++++++++++++++++++++++++++++++++++++++++++++++++")
             println("count: " + problems.size)
           }
+          buffer.clear()
         }
         def problems: Array[Problem] = buffer.toArray
 
@@ -52,5 +52,9 @@ object CustomReporter {
         }
         def comment(pos: xsbti.Position, msg: String): Unit = ()
       }
+
+  val ignoreWarnings = Seq(
+    compilerReporter in (Compile, compile) := reporter,
+    compilerReporter in (Test, compile) := reporter
   )
 }
