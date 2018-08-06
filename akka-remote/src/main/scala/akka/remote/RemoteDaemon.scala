@@ -22,6 +22,7 @@ import akka.actor.EmptyLocalActorRef
 import java.util.concurrent.ConcurrentHashMap
 
 import scala.collection.immutable
+import scala.collection.compat._
 import akka.dispatch.sysmsg.Unwatch
 
 /**
@@ -111,7 +112,7 @@ private[akka] class RemoteSystemDaemon(
       }
     }
 
-    val full = Vector() ++ names
+    val full = Vector.from(names)
     rec(full.mkString("/"), 0) match {
       case (Nobody, _) ⇒ Nobody
       case (ref, 0)    ⇒ ref

@@ -18,6 +18,7 @@ import com.typesafe.config.{ Config, ConfigFactory }
 import akka.pattern.ask
 import akka.testkit._
 import scala.util.control.NoStackTrace
+import akka.compat._
 
 object SchedulerSpec {
   val testConfRevolver = ConfigFactory.parseString("""

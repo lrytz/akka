@@ -17,6 +17,8 @@ import akka.remote.artery._
 import akka.util.OptionVal
 import org.agrona.collections.Long2ObjectHashMap
 
+import scala.collection.compat._
+
 /**
  * INTERNAL API
  * Decompress and cause compression advertisements.
@@ -147,8 +149,8 @@ private[remote] final class InboundCompressionsImpl(
     import scala.collection.JavaConverters._
     // can't use union because of java.lang.Long and Scala Long mismatch,
     // only used for testing so doesn't matter
-    val result = Set.empty[java.lang.Long] ++ _actorRefsIns.keySet.asScala.iterator ++
-      _classManifestsIns.keySet.asScala.iterator
+    val result = Set.from(_actorRefsIns.keySet.asScala.iterator) ++
+      Set.from(_classManifestsIns.keySet.asScala.iterator)
     result.map(_.longValue)
   }
 
