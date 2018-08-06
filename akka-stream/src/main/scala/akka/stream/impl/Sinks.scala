@@ -22,13 +22,13 @@ import akka.stream.stage._
 import org.reactivestreams.{ Publisher, Subscriber }
 
 import scala.annotation.unchecked.uncheckedVariance
-import scala.collection.generic.CanBuildFrom
 import scala.collection.immutable
 import scala.compat.java8.FutureConverters._
 import scala.compat.java8.OptionConverters._
 import scala.concurrent.{ Future, Promise }
 import scala.util.control.NonFatal
 import scala.util.{ Failure, Success, Try }
+import scala.collection.compat._
 
 /**
  * INTERNAL API
@@ -259,7 +259,7 @@ import scala.util.{ Failure, Success, Try }
 /**
  * INTERNAL API
  */
-@InternalApi private[akka] final class SeqStage[T, That](implicit cbf: CanBuildFrom[Nothing, T, That with immutable.Iterable[_]]) extends GraphStageWithMaterializedValue[SinkShape[T], Future[That]] {
+@InternalApi private[akka] final class SeqStage[T, That](implicit cbf: Factory[T, That with immutable.Iterable[_]]) extends GraphStageWithMaterializedValue[SinkShape[T], Future[That]] {
   val in = Inlet[T]("seq.in")
 
   override def toString: String = "SeqStage"
@@ -271,7 +271,7 @@ import scala.util.{ Failure, Success, Try }
   override def createLogicAndMaterializedValue(inheritedAttributes: Attributes) = {
     val p: Promise[That] = Promise()
     val logic = new GraphStageLogic(shape) with InHandler {
-      val buf = cbf()
+      val buf = cbf.newBuilder
 
       override def preStart(): Unit = pull(in)
 
