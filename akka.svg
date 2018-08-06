@@ -154,8 +154,8 @@
     <!-- protobuf -->
     <g id="node18" class="node">
       <title>protobuf</title>
-      <ellipse fill="none" stroke="#000000" cx="651.567" cy="-18" rx="43.5923" ry="18"/>
-      <text fill="#000000" text-anchor="middle" x="651.567" y="-14.3" font-family="Times,serif" font-size="14.00">protobuf</text>
+      <ellipse fill="green" stroke="#000000" cx="651.567" cy="-18" rx="43.5923" ry="18"/>
+      <text fill="white" text-anchor="middle" x="651.567" y="-14.3" font-family="Times,serif" font-size="14.00">protobuf</text>
     </g>
     <!-- remote to protobuf -->
     <g id="edge40" class="edge">
@@ -166,8 +166,8 @@
     <!-- stream -->
     <g id="node20" class="node">
       <title>stream</title>
-      <ellipse fill="none" stroke="#000000" cx="902.567" cy="-90" rx="34.394" ry="18"/>
-      <text fill="#000000" text-anchor="middle" x="902.567" y="-86.3" font-family="Times,serif" font-size="14.00">stream</text>
+      <ellipse fill="green" stroke="#000000" cx="902.567" cy="-90" rx="34.394" ry="18"/>
+      <text fill="white" text-anchor="middle" x="902.567" y="-86.3" font-family="Times,serif" font-size="14.00">stream</text>
     </g>
     <!-- remote to stream -->
     <g id="edge41" class="edge">
@@ -508,8 +508,8 @@
     <!-- actorTyped -->
     <g id="node26" class="node">
       <title>actorTyped</title>
-      <ellipse fill="none" stroke="#000000" cx="1345.567" cy="-90" rx="53.0913" ry="18"/>
-      <text fill="#000000" text-anchor="middle" x="1345.567" y="-86.3" font-family="Times,serif" font-size="14.00">actorTyped</text>
+      <ellipse fill="green" stroke="#000000" cx="1345.567" cy="-90" rx="53.0913" ry="18"/>
+      <text fill="white" text-anchor="middle" x="1345.567" y="-86.3" font-family="Times,serif" font-size="14.00">actorTyped</text>
     </g>
     <!-- actorTyped to actor -->
     <g id="edge59" class="edge">

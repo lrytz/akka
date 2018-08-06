@@ -58,35 +58,35 @@ val edges =
 tsort(edges)
 
 /*
-actor
-protobuf
-actorTyped
-stream
-osgi
-testkit
-persistence
-actorTests
-agent
-streamTestkit
-actorTestkitTyped
-slf4j
-streamTestsTck
-actorTypedTests
-persistenceQuery
-persistenceTck
-remote
-camel
-persistenceTyped
-streamTests
-streamTyped
-multiNodeTestkit
-persistenceShared
-remoteTests
-cluster
-clusterTools
-distributedData
-clusterMetrics
-clusterSharding
-contrib
-clusterTyped
+ * [X] actor
+ * [X] protobuf
+ * [X] actorTyped
+ * [X] stream
+ * [ ] osgi
+ * [ ] testkit
+ * [ ] persistence
+ * [ ] actorTests
+ * [ ] agent
+ * [ ] streamTestkit
+ * [ ] actorTestkitTyped
+ * [ ] slf4j
+ * [ ] streamTestsTck
+ * [ ] actorTypedTests
+ * [ ] persistenceQuery
+ * [ ] persistenceTck
+ * [ ] remote
+ * [ ] camel
+ * [ ] persistenceTyped
+ * [ ] streamTests
+ * [ ] streamTyped
+ * [ ] multiNodeTestkit
+ * [ ] persistenceShared
+ * [ ] remoteTests
+ * [ ] cluster
+ * [ ] clusterTools
+ * [ ] distributedData
+ * [ ] clusterMetrics
+ * [ ] clusterSharding
+ * [ ] contrib
+ * [ ] clusterTyped
 */
