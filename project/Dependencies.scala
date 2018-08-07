@@ -23,7 +23,7 @@ object Dependencies {
   val collectionCompatVersion = "0.2.0-SNAPSHOT"
 
   val Versions = Seq(
-    crossScalaVersions := Seq("2.12.4", "2.13.0-M4", "2.11.12"),
+    crossScalaVersions := Seq("2.13.0-M4", "2.12.4", "2.11.12"),
     scalaVersion := System.getProperty("akka.build.scalaVersion", crossScalaVersions.value.head),
     scalaStmVersion := sys.props.get("akka.build.scalaStmVersion").getOrElse("0.9"),
     scalaCheckVersion := sys.props.get("akka.build.scalaCheckVersion").getOrElse(

@@ -607,7 +607,7 @@ private[akka] class BarrierCoordinator extends Actor with LoggingFSM[BarrierCoor
     log.debug("handleBarrier({})", data)
     if (data.arrived.isEmpty) {
       goto(Idle) using data.copy(barrier = "")
-    } else if ((data.clients.map(_.fsm) -- data.arrived).isEmpty) {
+    } else if ((data.clients.map(_.fsm) -- data.arrived.toSet /* 2.13.0-M5 remove toSet */ ).isEmpty) {
       data.arrived foreach (_ ! ToClient(BarrierResult(data.barrier, true)))
       goto(Idle) using data.copy(barrier = "", arrived = Nil)
     } else {

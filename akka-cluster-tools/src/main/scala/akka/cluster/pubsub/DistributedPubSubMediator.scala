@@ -569,7 +569,7 @@ class DistributedPubSubMediator(settings: DistributedPubSubSettings) extends Act
         case _ ⇒
           (for {
             (_, bucket) ← registry
-            valueHolder ← bucket.content.get(path)
+            valueHolder ← (bucket.content.get(path): Iterable[Internal.ValueHolder] /* 2.13.0-M5 remove ascription */ )
             routee ← valueHolder.routee
           } yield routee).toVector
       }
@@ -745,7 +745,7 @@ class DistributedPubSubMediator(settings: DistributedPubSubSettings) extends Act
     val refs = for {
       (address, bucket) ← registry
       if !(allButSelf && address == selfAddress) // if we should skip sender() node and current address == self address => skip
-      valueHolder ← bucket.content.get(path)
+      valueHolder ← (bucket.content.get(path): Iterable[Internal.ValueHolder]) /* 2.13.0-M5 remove ascription */
       ref ← valueHolder.ref
     } yield ref
     if (refs.isEmpty) ignoreOrSendToDeadLetters(msg)
@@ -787,7 +787,7 @@ class DistributedPubSubMediator(settings: DistributedPubSubSettings) extends Act
     val topicPrefix = self.path.toStringWithoutAddress
     (for {
       (_, bucket) ← registry
-      (key, value) ← bucket.content
+      (key, value) ← (bucket.content: Map[String, Internal.ValueHolder] /* 2.13.0-M5 change ascription to .unsorted */ )
       if key.startsWith(topicPrefix)
       topic = key.substring(topicPrefix.length + 1)
       if !topic.contains('/') // exclude group topics

@@ -174,7 +174,8 @@ class MessageSerializer(val system: ExtendedActorSystem) extends SerializerWithS
     val allNodeMetrics = envelope.gossip.nodes
     val allAddresses: Vector[Address] = allNodeMetrics.iterator.map(_.address).to(scala.collection.immutable.Vector)
     val addressMapping = allAddresses.zipWithIndex.toMap
-    val allMetricNames: Vector[String] = allNodeMetrics.foldLeft(Set.empty[String])((s, n) ⇒ s ++ n.metrics.iterator.map(_.name)).toVector
+    val allMetricNames: Vector[String] =
+      allNodeMetrics.foldLeft(Set.empty[String])((s, n) ⇒ s ++ Set.fromSpecific(n.metrics.iterator.map(_.name))).toVector
     val metricNamesMapping = allMetricNames.zipWithIndex.toMap
     def mapAddress(address: Address) = mapWithErrorMessage(addressMapping, address, "address")
     def mapName(name: String) = mapWithErrorMessage(metricNamesMapping, name, "address")

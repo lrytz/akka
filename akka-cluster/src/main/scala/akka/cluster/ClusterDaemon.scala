@@ -1124,7 +1124,8 @@ private[cluster] class ClusterCoreDaemon(publisher: ActorRef, joinConfigCompatCh
       latestGossip.members collect {
         var upNumber = 0
 
-        {
+        // https://github.com/scala/bug/issues/11055
+        val f: PartialFunction[Member, Member] = {
           case m if m.dataCenter == selfDc && isJoiningToUp(m) ⇒
             // Move JOINING => UP (once all nodes have seen that this node is JOINING, i.e. we have a convergence)
             // and minimum number of nodes have joined the cluster
@@ -1142,6 +1143,8 @@ private[cluster] class ClusterCoreDaemon(publisher: ActorRef, joinConfigCompatCh
             // Move LEAVING => EXITING (once we have a convergence on LEAVING)
             m copy (status = Exiting)
         }
+
+        f
       }
     }
 

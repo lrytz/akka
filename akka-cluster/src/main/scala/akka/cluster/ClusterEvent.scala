@@ -443,7 +443,7 @@ object ClusterEvent {
         case (_, newMember :: oldMember :: Nil) if newMember.status != oldMember.status || newMember.upNumber != oldMember.upNumber ⇒
           newMember
       }
-      val memberEvents = (newMembers ++ changedMembers) collect {
+      val memberEvents = ((newMembers ++ changedMembers): Set[Member] /* 2.13.0-M5 change cast to .unsorted */ ) collect {
         case m if m.status == Joining  ⇒ MemberJoined(m)
         case m if m.status == WeaklyUp ⇒ MemberWeaklyUp(m)
         case m if m.status == Up       ⇒ MemberUp(m)
@@ -453,7 +453,7 @@ object ClusterEvent {
       }
 
       val removedMembers = oldGossip.members diff newGossip.members
-      val removedEvents = removedMembers.map(m ⇒ MemberRemoved(m.copy(status = Removed), m.status))
+      val removedEvents = (removedMembers: Set[Member] /* 2.13.0-M5 change cast to .unsorted */ ).map(m ⇒ MemberRemoved(m.copy(status = Removed), m.status))
 
       (new VectorBuilder[MemberEvent]() ++= removedEvents ++= memberEvents).result()
     }
