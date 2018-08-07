@@ -357,7 +357,7 @@ private[akka] class ClusterRouterPoolActor(
       val numberOfRouteesPerNode: Map[Address, Int] =
         currentRoutees.foldLeft(currentNodes.map(_ → 0).toMap.withDefaultValue(0)) { (acc, x) ⇒
           val address = fullAddress(x)
-          acc + (address → (acc(address) + 1))
+          acc.updated(address, (acc(address) + 1))
         }
 
       val (address, count) = numberOfRouteesPerNode.minBy(_._2)

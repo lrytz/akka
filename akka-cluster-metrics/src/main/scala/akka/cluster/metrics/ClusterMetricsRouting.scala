@@ -371,7 +371,7 @@ abstract class MixMetricsSelectorBase(selectors: immutable.IndexedSeq[CapacityMe
     combined.foldLeft(Map.empty[Address, (Double, Int)].withDefaultValue((0.0, 0))) {
       case (acc, (address, capacity)) ⇒
         val (sum, count) = acc(address)
-        acc + (address → ((sum + capacity, count + 1)))
+        acc.updated(address, ((sum + capacity, count + 1)))
     }.map {
       case (address, (sum, count)) ⇒ address → (sum / count)
     }
