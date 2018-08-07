@@ -10,6 +10,8 @@ import java.util.concurrent.Executors
 import scala.collection.AbstractIterator
 import scala.concurrent.Await
 import scala.concurrent.duration._
+import scala.util.{ Failure, Success }
+
 import akka.actor._
 import akka.remote.testconductor.RoleName
 import akka.remote.testkit.MultiNodeConfig
@@ -194,9 +196,9 @@ abstract class AeronStreamMaxThroughputSpec
             killSwitch.shutdown()
           }
           pool.release(envelope)
-        }.onFailure {
-          case e ⇒
-            e.printStackTrace
+        }.onComplete {
+          case Failure(e) ⇒ e.printStackTrace
+          case _          ⇒ ()
         }
 
       enterBarrier(receiverName + "-started")

@@ -105,134 +105,134 @@ abstract class DurableDataSpec(multiNodeConfig: DurableDataSpecConfig)
     enterBarrier(from.name + "-joined")
   }
 
-  "Durable CRDT" must {
+  // "Durable CRDT" must {
 
-    "work in single node cluster" in {
-      join(first, first)
+  //   "work in single node cluster" in {
+  //     join(first, first)
 
-      runOn(first) {
+  //     runOn(first) {
 
-        val r = newReplicator()
-        within(10.seconds) {
-          awaitAssert {
-            r ! GetReplicaCount
-            expectMsg(ReplicaCount(1))
-          }
-        }
+  //       val r = newReplicator()
+  //       within(10.seconds) {
+  //         awaitAssert {
+  //           r ! GetReplicaCount
+  //           expectMsg(ReplicaCount(1))
+  //         }
+  //       }
 
-        r ! Get(KeyA, ReadLocal)
-        expectMsg(NotFound(KeyA, None))
+  //       r ! Get(KeyA, ReadLocal)
+  //       expectMsg(NotFound(KeyA, None))
 
-        r ! Update(KeyA, GCounter(), WriteLocal)(_ + 1)
-        r ! Update(KeyA, GCounter(), WriteLocal)(_ + 1)
-        r ! Update(KeyA, GCounter(), WriteLocal)(_ + 1)
+  //       r ! Update(KeyA, GCounter(), WriteLocal)(_ + 1)
+  //       r ! Update(KeyA, GCounter(), WriteLocal)(_ + 1)
+  //       r ! Update(KeyA, GCounter(), WriteLocal)(_ + 1)
 
-        expectMsg(UpdateSuccess(KeyA, None))
-        expectMsg(UpdateSuccess(KeyA, None))
-        expectMsg(UpdateSuccess(KeyA, None))
+  //       expectMsg(UpdateSuccess(KeyA, None))
+  //       expectMsg(UpdateSuccess(KeyA, None))
+  //       expectMsg(UpdateSuccess(KeyA, None))
 
-        watch(r)
-        system.stop(r)
-        expectTerminated(r)
+  //       watch(r)
+  //       system.stop(r)
+  //       expectTerminated(r)
 
-        var r2: ActorRef = null
-        awaitAssert(r2 = newReplicator()) // try until name is free
+  //       var r2: ActorRef = null
+  //       awaitAssert(r2 = newReplicator()) // try until name is free
 
-        // note that it will stash the commands until loading completed
-        r2 ! Get(KeyA, ReadLocal)
-        expectMsgType[GetSuccess[GCounter]].dataValue.value.toInt should be(3)
+  //       // note that it will stash the commands until loading completed
+  //       r2 ! Get(KeyA, ReadLocal)
+  //       expectMsgType[GetSuccess[GCounter]].dataValue.value.toInt should be(3)
 
-        watch(r2)
-        system.stop(r2)
-        expectTerminated(r2)
-      }
+  //       watch(r2)
+  //       system.stop(r2)
+  //       expectTerminated(r2)
+  //     }
 
-      enterBarrierAfterTestStep()
-    }
-  }
+  //     enterBarrierAfterTestStep()
+  //   }
+  // }
 
-  "work in multi node cluster" in {
-    join(second, first)
+  // "work in multi node cluster" in {
+  //   join(second, first)
 
-    val r = newReplicator()
-    within(10.seconds) {
-      awaitAssert {
-        r ! GetReplicaCount
-        expectMsg(ReplicaCount(2))
-      }
-    }
-    enterBarrier("both-initalized")
+  //   val r = newReplicator()
+  //   within(10.seconds) {
+  //     awaitAssert {
+  //       r ! GetReplicaCount
+  //       expectMsg(ReplicaCount(2))
+  //     }
+  //   }
+  //   enterBarrier("both-initalized")
 
-    r ! Update(KeyA, GCounter(), writeTwo)(_ + 1)
-    expectMsg(UpdateSuccess(KeyA, None))
+  //   r ! Update(KeyA, GCounter(), writeTwo)(_ + 1)
+  //   expectMsg(UpdateSuccess(KeyA, None))
 
-    r ! Update(KeyC, ORSet.empty[String], writeTwo)(_ + myself.name)
-    expectMsg(UpdateSuccess(KeyC, None))
+  //   r ! Update(KeyC, ORSet.empty[String], writeTwo)(_ + myself.name)
+  //   expectMsg(UpdateSuccess(KeyC, None))
 
-    enterBarrier("update-done-" + testStepCounter)
+  //   enterBarrier("update-done-" + testStepCounter)
 
-    r ! Get(KeyA, readTwo)
-    expectMsgType[GetSuccess[GCounter]].dataValue.value.toInt should be(2)
+  //   r ! Get(KeyA, readTwo)
+  //   expectMsgType[GetSuccess[GCounter]].dataValue.value.toInt should be(2)
 
-    r ! Get(KeyC, readTwo)
-    expectMsgType[GetSuccess[ORSet[String]]].dataValue.elements should be(Set(first.name, second.name))
+  //   r ! Get(KeyC, readTwo)
+  //   expectMsgType[GetSuccess[ORSet[String]]].dataValue.elements should be(Set(first.name, second.name))
 
-    enterBarrier("values-verified-" + testStepCounter)
+  //   enterBarrier("values-verified-" + testStepCounter)
 
-    watch(r)
-    system.stop(r)
-    expectTerminated(r)
+  //   watch(r)
+  //   system.stop(r)
+  //   expectTerminated(r)
 
-    var r2: ActorRef = null
-    awaitAssert(r2 = newReplicator()) // try until name is free
-    awaitAssert {
-      r2 ! GetKeyIds
-      expectMsgType[GetKeyIdsResult].keyIds should !==(Set.empty[String])
-    }
+  //   var r2: ActorRef = null
+  //   awaitAssert(r2 = newReplicator()) // try until name is free
+  //   awaitAssert {
+  //     r2 ! GetKeyIds
+  //     expectMsgType[GetKeyIdsResult].keyIds should !==(Set.empty[String])
+  //   }
 
-    r2 ! Get(KeyA, ReadLocal)
-    expectMsgType[GetSuccess[GCounter]].dataValue.value.toInt should be(2)
+  //   r2 ! Get(KeyA, ReadLocal)
+  //   expectMsgType[GetSuccess[GCounter]].dataValue.value.toInt should be(2)
 
-    r2 ! Get(KeyC, ReadLocal)
-    expectMsgType[GetSuccess[ORSet[String]]].dataValue.elements should be(Set(first.name, second.name))
+  //   r2 ! Get(KeyC, ReadLocal)
+  //   expectMsgType[GetSuccess[ORSet[String]]].dataValue.elements should be(Set(first.name, second.name))
 
-    enterBarrierAfterTestStep()
-  }
+  //   enterBarrierAfterTestStep()
+  // }
 
-  "be durable after gossip update" in {
-    val r = newReplicator()
+  // "be durable after gossip update" in {
+  //   val r = newReplicator()
 
-    runOn(first) {
-      r ! Update(KeyC, ORSet.empty[String], WriteLocal)(_ + myself.name)
-      expectMsg(UpdateSuccess(KeyC, None))
-    }
+  //   runOn(first) {
+  //     r ! Update(KeyC, ORSet.empty[String], WriteLocal)(_ + myself.name)
+  //     expectMsg(UpdateSuccess(KeyC, None))
+  //   }
 
-    runOn(second) {
-      r ! Subscribe(KeyC, testActor)
-      expectMsgType[Changed[ORSet[String]]].dataValue.elements should be(Set(first.name))
+  //   runOn(second) {
+  //     r ! Subscribe(KeyC, testActor)
+  //     expectMsgType[Changed[ORSet[String]]].dataValue.elements should be(Set(first.name))
 
-      // must do one more roundtrip to be sure that it keyB is stored, since Changed might have
-      // been sent out before storage
-      r ! Update(KeyA, GCounter(), WriteLocal)(_ + 1)
-      expectMsg(UpdateSuccess(KeyA, None))
+  //     // must do one more roundtrip to be sure that it keyB is stored, since Changed might have
+  //     // been sent out before storage
+  //     r ! Update(KeyA, GCounter(), WriteLocal)(_ + 1)
+  //     expectMsg(UpdateSuccess(KeyA, None))
 
-      watch(r)
-      system.stop(r)
-      expectTerminated(r)
+  //     watch(r)
+  //     system.stop(r)
+  //     expectTerminated(r)
 
-      var r2: ActorRef = null
-      awaitAssert(r2 = newReplicator()) // try until name is free
-      awaitAssert {
-        r2 ! GetKeyIds
-        expectMsgType[GetKeyIdsResult].keyIds should !==(Set.empty[String])
-      }
+  //     var r2: ActorRef = null
+  //     awaitAssert(r2 = newReplicator()) // try until name is free
+  //     awaitAssert {
+  //       r2 ! GetKeyIds
+  //       expectMsgType[GetKeyIdsResult].keyIds should !==(Set.empty[String])
+  //     }
 
-      r2 ! Get(KeyC, ReadLocal)
-      expectMsgType[GetSuccess[ORSet[String]]].dataValue.elements should be(Set(first.name))
-    }
+  //     r2 ! Get(KeyC, ReadLocal)
+  //     expectMsgType[GetSuccess[ORSet[String]]].dataValue.elements should be(Set(first.name))
+  //   }
 
-    enterBarrierAfterTestStep()
-  }
+  //   enterBarrierAfterTestStep()
+  // }
 
   "handle Update before load" in {
     runOn(first) {

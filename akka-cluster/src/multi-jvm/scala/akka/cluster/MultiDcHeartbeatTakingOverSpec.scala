@@ -192,7 +192,7 @@ abstract class MultiDcHeartbeatTakingOverSpec extends MultiNodeSpec(MultiDcHeart
     membersByAge(dataCenter).take(n)
 
   private def membersAsRoles(ms: SortedSet[Member]): SortedSet[RoleName] = {
-    val res = ms.flatMap(m ⇒ roleName(m.address))
+    val res = ms.flatMap(m ⇒ (roleName(m.address): Iterable[RoleName] /* 2.13.0-M5 */ ))
     require(res.size == ms.size, s"Not all members were converted to roles! Got: ${ms}, found ${res}")
     res
   }

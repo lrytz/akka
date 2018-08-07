@@ -18,6 +18,8 @@ import akka.testkit.TestEvent._
 import akka.actor.{ Actor, ActorRef, ActorSystem, Address, Deploy, PoisonPill, Props, RootActorPath }
 import akka.event.Logging.ErrorLevel
 
+import scala.collection.compat._
+
 import scala.concurrent.duration._
 import scala.collection.immutable
 import java.util.concurrent.ConcurrentHashMap
@@ -273,7 +275,7 @@ trait MultiNodeClusterSpec extends Suite with STMultiNodeSpec with WatchedByCoro
    * be determined from the `RoleName`.
    */
   def assertLeader(nodesInCluster: RoleName*): Unit =
-    if (nodesInCluster.contains(myself)) assertLeaderIn(nodesInCluster.to[immutable.Seq])
+    if (nodesInCluster.contains(myself)) assertLeaderIn(nodesInCluster.to(immutable.Seq))
 
   /**
    * Assert that the cluster has elected the correct leader
@@ -307,12 +309,13 @@ trait MultiNodeClusterSpec extends Suite with STMultiNodeSpec with WatchedByCoro
     canNotBePartOfMemberRing: Set[Address]   = Set.empty,
     timeout:                  FiniteDuration = 25.seconds): Unit = {
     within(timeout) {
+      val clusterViewMembers: Set[Member] = clusterView.members /* 2.13.0-M5 .unsorted */
       if (!canNotBePartOfMemberRing.isEmpty) // don't run this on an empty set
-        awaitAssert(canNotBePartOfMemberRing foreach (a ⇒ clusterView.members.map(_.address) should not contain (a)))
-      awaitAssert(clusterView.members.size should ===(numberOfMembers))
-      awaitAssert(clusterView.members.map(_.status) should ===(Set(MemberStatus.Up)))
+        awaitAssert(canNotBePartOfMemberRing foreach (a ⇒ clusterViewMembers.map(_.address) should not contain (a)))
+      awaitAssert(clusterViewMembers.size should ===(numberOfMembers))
+      awaitAssert(clusterViewMembers.map(_.status) should ===(Set(MemberStatus.Up)))
       // clusterView.leader is updated by LeaderChanged, await that to be updated also
-      val expectedLeader = clusterView.members.collectFirst {
+      val expectedLeader = clusterViewMembers.collectFirst {
         case m if m.dataCenter == cluster.settings.SelfDataCenter ⇒ m.address
       }
       awaitAssert(clusterView.leader should ===(expectedLeader))

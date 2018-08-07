@@ -38,9 +38,10 @@ abstract class NodeMembershipSpec
 
       runOn(first, second) {
         cluster.join(first)
-        awaitAssert(clusterView.members.size should ===(2))
-        assertMembers(clusterView.members, first, second)
-        awaitAssert(clusterView.members.map(_.status) should ===(Set(MemberStatus.Up)))
+        val clusterViewMembers: Set[Member] = clusterView.members /* 2.13.0-M5 .unsorted */
+        awaitAssert(clusterViewMembers.size should ===(2))
+        assertMembers(clusterViewMembers, first, second)
+        awaitAssert(clusterViewMembers.map(_.status) should ===(Set(MemberStatus.Up)))
       }
 
       enterBarrier("after-1")
@@ -52,9 +53,10 @@ abstract class NodeMembershipSpec
         cluster.join(first)
       }
 
-      awaitAssert(clusterView.members.size should ===(3))
-      assertMembers(clusterView.members, first, second, third)
-      awaitAssert(clusterView.members.map(_.status) should ===(Set(MemberStatus.Up)))
+      val clusterViewMembers: Set[Member] = clusterView.members /* 2.13.0-M5 .unsorted */
+      awaitAssert(clusterViewMembers.size should ===(3))
+      assertMembers(clusterViewMembers, first, second, third)
+      awaitAssert(clusterViewMembers.map(_.status) should ===(Set(MemberStatus.Up)))
 
       enterBarrier("after-2")
     }

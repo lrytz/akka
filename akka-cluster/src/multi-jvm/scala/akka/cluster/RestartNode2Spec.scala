@@ -100,8 +100,9 @@ abstract class RestartNode2SpecSpec
 
       runOn(seed1) {
         Cluster(seed1System).joinSeedNodes(seedNodes)
-        awaitAssert(Cluster(seed1System).readView.members.size should be(2))
-        awaitAssert(Cluster(seed1System).readView.members.map(_.status) should be(Set(Up)))
+        val readViewMembers: Set[Member] = Cluster(seed1System).readView.members /* 2.13.0-M5 .unsorted */
+        awaitAssert(readViewMembers.size should be(2))
+        awaitAssert(readViewMembers.map(_.status) should be(Set(Up)))
       }
       runOn(seed2) {
         cluster.joinSeedNodes(seedNodes)
@@ -119,8 +120,9 @@ abstract class RestartNode2SpecSpec
       runOn(seed1) {
         Cluster(restartedSeed1System).joinSeedNodes(seedNodes)
         within(30.seconds) {
-          awaitAssert(Cluster(restartedSeed1System).readView.members.size should be(2))
-          awaitAssert(Cluster(restartedSeed1System).readView.members.map(_.status) should be(Set(Up)))
+          val readViewMembers: Set[Member] = Cluster(restartedSeed1System).readView.members /* 2.13.0-M5 .unsorted */
+          awaitAssert(readViewMembers.size should be(2))
+          awaitAssert(readViewMembers.map(_.status) should be(Set(Up)))
         }
       }
       runOn(seed2) {

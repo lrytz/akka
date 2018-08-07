@@ -120,8 +120,9 @@ abstract class RestartNodeSpec
       }
       runOn(second) {
         Cluster(secondSystem).joinSeedNodes(seedNodes)
-        awaitAssert(Cluster(secondSystem).readView.members.size should ===(3))
-        awaitAssert(Cluster(secondSystem).readView.members.map(_.status) should ===(Set(Up)))
+        val readViewMembers: Set[Member] = Cluster(secondSystem).readView.members /* 2.13.0-M5 .unsorted */
+        awaitAssert(readViewMembers.size should ===(3))
+        awaitAssert(readViewMembers.map(_.status) should ===(Set(Up)))
       }
       enterBarrier("started")
 
@@ -138,8 +139,9 @@ abstract class RestartNodeSpec
       // then immediately start restartedSecondSystem, which has the same address as secondSystem
       runOn(second) {
         Cluster(restartedSecondSystem).joinSeedNodes(seedNodes)
-        awaitAssert(Cluster(restartedSecondSystem).readView.members.size should ===(3))
-        awaitAssert(Cluster(restartedSecondSystem).readView.members.map(_.status) should ===(Set(Up)))
+        val readViewMembers: Set[Member] = Cluster(restartedSecondSystem).readView.members /* 2.13.0-M5 .unsorted */
+        awaitAssert(readViewMembers.size should ===(3))
+        awaitAssert(readViewMembers.map(_.status) should ===(Set(Up)))
       }
       runOn(first, third) {
         awaitAssert {

@@ -307,7 +307,7 @@ class TlsSpec extends StreamSpec(TlsSpec.configOverrides) with WithLogCapturing 
     // difference is that the RHS engine will now receive the handshake while trying to send
     object SessionRenegotiationByReceiver extends PayloadScenario {
       val str = "abcdef" * 100
-      def inputs = str.map(send) ++ Seq(NegotiateNewSession) ++ "hello world".map(send)
+      def inputs = str.map((c: Char) ⇒ send(c)) ++ Seq(NegotiateNewSession) ++ "hello world".map((c: Char) ⇒ send(c))
       def output = ByteString(str + "NEWSESSIONhello world")
     }
 

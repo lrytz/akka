@@ -186,9 +186,10 @@ abstract class UnreachableNodeJoinsAgainSpec
         try {
           Cluster(freshSystem).join(masterAddress)
           within(30 seconds) {
-            awaitAssert(Cluster(freshSystem).readView.members.map(_.address) should contain(victimAddress))
-            awaitAssert(Cluster(freshSystem).readView.members.size should ===(expectedNumberOfMembers))
-            awaitAssert(Cluster(freshSystem).readView.members.map(_.status) should ===(Set(MemberStatus.Up)))
+            val readViewMembers: Set[Member] = Cluster(freshSystem).readView.members /* 2.13.0-M5 .unsorted */
+            awaitAssert(readViewMembers.map(_.address) should contain(victimAddress))
+            awaitAssert(readViewMembers.size should ===(expectedNumberOfMembers))
+            awaitAssert(readViewMembers.map(_.status) should ===(Set(MemberStatus.Up)))
           }
 
           // signal to master node that victim is done

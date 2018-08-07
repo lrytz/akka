@@ -1,156 +1,160 @@
-/**
- * Copyright (C) 2014-2018 Lightbend Inc. <https://www.lightbend.com>
+/*
+ * Copyright (C) 2018 Lightbend Inc. <https://www.lightbend.com>
  */
 
-package akka.persistence
+// /**
+//  * Copyright (C) 2014-2018 Lightbend Inc. <https://www.lightbend.com>
+//  */
 
-import scala.concurrent.duration._
-import org.openjdk.jmh.annotations._
-import akka.actor._
-import akka.testkit.TestProbe
-import java.io.File
-import org.apache.commons.io.FileUtils
-import org.openjdk.jmh.annotations.Scope
-import scala.concurrent.Await
+// package akka.persistence
 
-@State(Scope.Benchmark)
-@BenchmarkMode(Array(Mode.Throughput))
-class PersistentActorThroughputBenchmark {
+// import scala.concurrent.duration._
+// import org.openjdk.jmh.annotations._
+// import akka.actor._
+// import akka.testkit.TestProbe
+// import java.io.File
+// import org.apache.commons.io.FileUtils
+// import org.openjdk.jmh.annotations.Scope
+// import scala.concurrent.Await
 
-  val config = PersistenceSpec.config("leveldb", "benchmark")
+// @State(Scope.Benchmark)
+// @BenchmarkMode(Array(Mode.Throughput))
+// class PersistentActorThroughputBenchmark {
 
-  lazy val storageLocations = List(
-    "akka.persistence.journal.leveldb.dir",
-    "akka.persistence.journal.leveldb-shared.store.dir",
-    "akka.persistence.snapshot-store.local.dir"
-  ).map(s ⇒ new File(system.settings.config.getString(s)))
+//   val config = PersistenceSpec.config("leveldb", "benchmark")
 
-  var system: ActorSystem = _
+//   lazy val storageLocations = List(
+//     "akka.persistence.journal.leveldb.dir",
+//     "akka.persistence.journal.leveldb-shared.store.dir",
+//     "akka.persistence.snapshot-store.local.dir"
+//   ).map(s ⇒ new File(system.settings.config.getString(s)))
 
-  var probe: TestProbe = _
-  var actor: ActorRef = _
-  var persistPersistentActor: ActorRef = _
-  var persistAsync1PersistentActor: ActorRef = _
-  var noPersistPersistentActor: ActorRef = _
-  var persistAsyncQuickReplyPersistentActor: ActorRef = _
+//   var system: ActorSystem = _
 
-  val data10k = (1 to 10000).toArray
+//   var probe: TestProbe = _
+//   var actor: ActorRef = _
+//   var persistPersistentActor: ActorRef = _
+//   var persistAsync1PersistentActor: ActorRef = _
+//   var noPersistPersistentActor: ActorRef = _
+//   var persistAsyncQuickReplyPersistentActor: ActorRef = _
 
-  @Setup
-  def setup(): Unit = {
-    system = ActorSystem("test", config)
+//   val data10k = (1 to 10000).toArray
 
-    probe = TestProbe()(system)
+//   @Setup
+//   def setup(): Unit = {
+//     system = ActorSystem("test", config)
 
-    storageLocations.foreach(FileUtils.deleteDirectory)
+//     probe = TestProbe()(system)
 
-    actor = system.actorOf(Props(classOf[BaselineActor], data10k.last), "a-1")
+//     storageLocations.foreach(FileUtils.deleteDirectory)
 
-    noPersistPersistentActor = system.actorOf(Props(classOf[NoPersistPersistentActor], data10k.last), "nop-1")
-    persistPersistentActor = system.actorOf(Props(classOf[PersistPersistentActor], data10k.last), "ep-1")
-    persistAsync1PersistentActor = system.actorOf(Props(classOf[PersistAsyncPersistentActor], data10k.last), "epa-1")
+//     actor = system.actorOf(Props(classOf[BaselineActor], data10k.last), "a-1")
 
-    persistAsyncQuickReplyPersistentActor = system.actorOf(Props(classOf[PersistAsyncQuickReplyPersistentActor], data10k.last), "epa-2")
-  }
+//     noPersistPersistentActor = system.actorOf(Props(classOf[NoPersistPersistentActor], data10k.last), "nop-1")
+//     persistPersistentActor = system.actorOf(Props(classOf[PersistPersistentActor], data10k.last), "ep-1")
+//     persistAsync1PersistentActor = system.actorOf(Props(classOf[PersistAsyncPersistentActor], data10k.last), "epa-1")
 
-  @TearDown
-  def shutdown(): Unit = {
-    system.terminate()
-    Await.ready(system.whenTerminated, 15.seconds)
+//     persistAsyncQuickReplyPersistentActor = system.actorOf(Props(classOf[PersistAsyncQuickReplyPersistentActor], data10k.last), "epa-2")
+//   }
 
-    storageLocations.foreach(FileUtils.deleteDirectory)
-  }
+//   @TearDown
+//   def shutdown(): Unit = {
+//     system.terminate()
+//     Await.ready(system.whenTerminated, 15.seconds)
 
-  @Benchmark
-  @OperationsPerInvocation(10000)
-  def actor_normalActor_reply_baseline(): Unit = {
-    for (i ← data10k) actor.tell(i, probe.ref)
+//     storageLocations.foreach(FileUtils.deleteDirectory)
+//   }
 
-    probe.expectMsg(data10k.last)
-  }
+//   @Benchmark
+//   @OperationsPerInvocation(10000)
+//   def actor_normalActor_reply_baseline(): Unit = {
+//     for (i ← data10k) actor.tell(i, probe.ref)
 
-  @Benchmark
-  @OperationsPerInvocation(10000)
-  def persistentActor_persist_reply(): Unit = {
-    for (i ← data10k) persistPersistentActor.tell(i, probe.ref)
+//     probe.expectMsg(data10k.last)
+//   }
 
-    probe.expectMsg(Evt(data10k.last))
-  }
+//   @Benchmark
+//   @OperationsPerInvocation(10000)
+//   def persistentActor_persist_reply(): Unit = {
+//     for (i ← data10k) persistPersistentActor.tell(i, probe.ref)
 
-  @Benchmark
-  @OperationsPerInvocation(10000)
-  def persistentActor_persistAsync_reply(): Unit = {
-    for (i ← data10k) persistAsync1PersistentActor.tell(i, probe.ref)
+//     probe.expectMsg(Evt(data10k.last))
+//   }
 
-    probe.expectMsg(Evt(data10k.last))
-  }
+//   @Benchmark
+//   @OperationsPerInvocation(10000)
+//   def persistentActor_persistAsync_reply(): Unit = {
+//     for (i ← data10k) persistAsync1PersistentActor.tell(i, probe.ref)
 
-  @Benchmark
-  @OperationsPerInvocation(10000)
-  def persistentActor_noPersist_reply(): Unit = {
-    for (i ← data10k) noPersistPersistentActor.tell(i, probe.ref)
+//     probe.expectMsg(Evt(data10k.last))
+//   }
 
-    probe.expectMsg(Evt(data10k.last))
-  }
+//   @Benchmark
+//   @OperationsPerInvocation(10000)
+//   def persistentActor_noPersist_reply(): Unit = {
+//     for (i ← data10k) noPersistPersistentActor.tell(i, probe.ref)
 
-  @Benchmark
-  @OperationsPerInvocation(10000)
-  def persistentActor_persistAsync_replyRightOnCommandReceive(): Unit = {
-    for (i ← data10k) persistAsyncQuickReplyPersistentActor.tell(i, probe.ref)
+//     probe.expectMsg(Evt(data10k.last))
+//   }
 
-    probe.expectMsg(Evt(data10k.last))
-  }
+//   @Benchmark
+//   @OperationsPerInvocation(10000)
+//   def persistentActor_persistAsync_replyRightOnCommandReceive(): Unit = {
+//     for (i ← data10k) persistAsyncQuickReplyPersistentActor.tell(i, probe.ref)
 
-}
+//     probe.expectMsg(Evt(data10k.last))
+//   }
 
-class NoPersistPersistentActor(respondAfter: Int) extends PersistentActor {
+// }
 
-  override def persistenceId: String = self.path.name
+// class NoPersistPersistentActor(respondAfter: Int) extends PersistentActor {
 
-  override def receiveCommand = {
-    case n: Int ⇒ if (n == respondAfter) sender() ! Evt(n)
-  }
-  override def receiveRecover = {
-    case _ ⇒ // do nothing
-  }
+//   override def persistenceId: String = self.path.name
 
-}
-class PersistPersistentActor(respondAfter: Int) extends PersistentActor {
+//   override def receiveCommand = {
+//     case n: Int ⇒ if (n == respondAfter) sender() ! Evt(n)
+//   }
+//   override def receiveRecover = {
+//     case _ ⇒ // do nothing
+//   }
 
-  override def persistenceId: String = self.path.name
+// }
+// class PersistPersistentActor(respondAfter: Int) extends PersistentActor {
 
-  override def receiveCommand = {
-    case n: Int ⇒ persist(Evt(n)) { e ⇒ if (e.i == respondAfter) sender() ! e }
-  }
-  override def receiveRecover = {
-    case _ ⇒ // do nothing
-  }
+//   override def persistenceId: String = self.path.name
 
-}
+//   override def receiveCommand = {
+//     case n: Int ⇒ persist(Evt(n)) { e ⇒ if (e.i == respondAfter) sender() ! e }
+//   }
+//   override def receiveRecover = {
+//     case _ ⇒ // do nothing
+//   }
 
-class PersistAsyncPersistentActor(respondAfter: Int) extends PersistentActor {
-  override def persistenceId: String = self.path.name
+// }
 
-  override def receiveCommand = {
-    case n: Int ⇒
-      persistAsync(Evt(n)) { e ⇒ if (e.i == respondAfter) sender() ! e }
-  }
-  override def receiveRecover = {
-    case _ ⇒ // do nothing
-  }
-}
+// class PersistAsyncPersistentActor(respondAfter: Int) extends PersistentActor {
+//   override def persistenceId: String = self.path.name
 
-class PersistAsyncQuickReplyPersistentActor(respondAfter: Int) extends PersistentActor {
+//   override def receiveCommand = {
+//     case n: Int ⇒
+//       persistAsync(Evt(n)) { e ⇒ if (e.i == respondAfter) sender() ! e }
+//   }
+//   override def receiveRecover = {
+//     case _ ⇒ // do nothing
+//   }
+// }
 
-  override def persistenceId: String = self.path.name
+// class PersistAsyncQuickReplyPersistentActor(respondAfter: Int) extends PersistentActor {
 
-  override def receiveCommand = {
-    case n: Int ⇒
-      val e = Evt(n)
-      if (n == respondAfter) sender() ! e
-      persistAsync(e)(identity)
-  }
-  override def receiveRecover = {
-    case _ ⇒ // do nothing
-  }
-}
+//   override def persistenceId: String = self.path.name
+
+//   override def receiveCommand = {
+//     case n: Int ⇒
+//       val e = Evt(n)
+//       if (n == respondAfter) sender() ! e
+//       persistAsync(e)(identity)
+//   }
+//   override def receiveRecover = {
+//     case _ ⇒ // do nothing
+//   }
+// }

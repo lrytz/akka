@@ -6,7 +6,7 @@ package akka.cluster.ddata
 
 import scala.concurrent.duration._
 
-import akka.cluster.Cluster
+import akka.cluster.{ Cluster, Member }
 import akka.cluster.ClusterEvent.InitialStateAsEvents
 import akka.cluster.ClusterEvent.MemberUp
 import akka.remote.testconductor.RoleName
@@ -76,10 +76,13 @@ class DurablePruningSpec extends MultiNodeSpec(DurablePruningSpec) with STMultiN
       val probe2 = TestProbe()(sys2)
       Cluster(sys2).join(node(first).address)
       awaitAssert({
-        Cluster(system).state.members.size should ===(4)
-        Cluster(system).state.members.map(_.status) should ===(Set(MemberStatus.Up))
-        Cluster(sys2).state.members.size should ===(4)
-        Cluster(sys2).state.members.map(_.status) should ===(Set(MemberStatus.Up))
+        val members: Set[Member] = Cluster(system).state.members /* 2.13.0-M5 .unsorted */
+        members.size should ===(4)
+        members.map(_.status) should ===(Set(MemberStatus.Up))
+
+        val members2: Set[Member] = Cluster(sys2).state.members /* 2.13.0-M5 .unsorted */
+        members2.size should ===(4)
+        members2.map(_.status) should ===(Set(MemberStatus.Up))
       }, 10.seconds)
       enterBarrier("joined")
 
