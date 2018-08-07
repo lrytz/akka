@@ -158,14 +158,14 @@ class ExtensionsSpec extends TypedAkkaSpec {
         ) { _ ⇒ () }
       }
 
-    "load an extension implemented in Java" in
-      withEmptyActorSystem("ExtensionsSpec09") { system ⇒
-        // no way to make apply work cleanly with extensions implemented in Java
-        val instance1 = ExtensionsTest.MyExtension.get(system)
-        val instance2 = ExtensionsTest.MyExtension.get(system)
+    // "load an extension implemented in Java" in
+    //   withEmptyActorSystem("ExtensionsSpec09") { system ⇒
+    //     // no way to make apply work cleanly with extensions implemented in Java
+    //     val instance1 = ExtensionsTest.MyExtension.get(system)
+    //     val instance2 = ExtensionsTest.MyExtension.get(system)
 
-        instance1 should be theSameInstanceAs instance2
-      }
+    //     instance1 should be theSameInstanceAs instance2
+    //   }
 
     "load registered typed extensions eagerly even for untyped system" in {
       import akka.actor.typed.scaladsl.adapter._

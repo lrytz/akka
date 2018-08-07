@@ -46,24 +46,24 @@ class LineNumberSpec extends AkkaSpec {
 
     }
 
-    "writing Java" must {
-      val l = new LineNumberSpecCodeForJava
+    // "writing Java" must {
+    //   val l = new LineNumberSpecCodeForJava
 
-      "work for small functions" in {
-        // because how java Lambdas are implemented/designed
-        LineNumbers(l.f1()) should ===(SourceFileLines("LineNumberSpecCodeForJava.java", 20, 20))
-      }
+    //   "work for small functions" in {
+    //     // because how java Lambdas are implemented/designed
+    //     LineNumbers(l.f1()) should ===(SourceFileLines("LineNumberSpecCodeForJava.java", 20, 20))
+    //   }
 
-      "work for larger functions" in {
-        // because how java Lambdas are implemented/designed
-        LineNumbers(l.f2()) should ===(SourceFileLines("LineNumberSpecCodeForJava.java", 25, 26))
-      }
+    //   "work for larger functions" in {
+    //     // because how java Lambdas are implemented/designed
+    //     LineNumbers(l.f2()) should ===(SourceFileLines("LineNumberSpecCodeForJava.java", 25, 26))
+    //   }
 
-      "work for anonymous classes" in {
-        LineNumbers(l.f3()) should ===(SourceFileLines("LineNumberSpecCodeForJava.java", 31, 36))
-      }
+    //   "work for anonymous classes" in {
+    //     LineNumbers(l.f3()) should ===(SourceFileLines("LineNumberSpecCodeForJava.java", 31, 36))
+    //   }
 
-    }
+    // }
 
   }
 

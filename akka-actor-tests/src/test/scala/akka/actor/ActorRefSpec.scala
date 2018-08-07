@@ -390,12 +390,12 @@ class ActorRefSpec extends AkkaSpec with DefaultTimeout {
       system.stop(serverRef)
     }
 
-    "support actorOfs where the class of the actor isn't public" in {
-      val a = system.actorOf(NonPublicClass.createProps())
-      a.tell("pigdog", testActor)
-      expectMsg("pigdog")
-      system stop a
-    }
+    // "support actorOfs where the class of the actor isn't public" in {
+    //   val a = system.actorOf(NonPublicClass.createProps())
+    //   a.tell("pigdog", testActor)
+    //   expectMsg("pigdog")
+    //   system stop a
+    // }
 
     "stop when sent a poison pill" in {
       val timeout = Timeout(20.seconds)

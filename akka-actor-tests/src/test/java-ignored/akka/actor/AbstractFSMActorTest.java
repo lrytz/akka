@@ -58,3 +58,14 @@ public class AbstractFSMActorTest extends JUnitSuite {
 
 
 }
+
+// /home/gui/akka/akka-actor-tests/src/test/java/akka/actor/AbstractFSMActorTest.java:51:1: no suitable method found for create(java.lang.Class<akka.actor.AbstractFSMActorTest.MyFSM>,akka.actor.ActorRef)
+//     method akka.actor.Props.<T>create(java.lang.Class<T>,akka.japi.Creator<T>) is not applicable
+//       (cannot infer type-variable(s) T
+//         (argument mismatch; akka.actor.ActorRef cannot be converted to akka.japi.Creator<T>))
+//     method akka.actor.Props.<T>create(akka.japi.Creator<T>) is not applicable
+//       (cannot infer type-variable(s) T
+//         (actual and formal argument lists differ in length))
+//     method akka.actor.Props.create(java.lang.Class<?>,scala.collection.immutable.Seq<java.lang.Object>) is not applicable
+//       (argument mismatch; akka.actor.ActorRef cannot be converted to scala.collection.immutable.Seq<java.lang.Object>)
+// Props.create

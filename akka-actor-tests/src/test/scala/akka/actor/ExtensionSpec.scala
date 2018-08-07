@@ -14,7 +14,7 @@ import org.scalatest.junit.JUnitSuiteLike
 
 import scala.util.control.NoStackTrace
 
-class JavaExtensionSpec extends JavaExtension with JUnitSuiteLike
+// class JavaExtensionSpec extends JavaExtension with JUnitSuiteLike
 
 object TestExtension extends ExtensionId[TestExtension] with ExtensionIdProvider {
   def lookup = this

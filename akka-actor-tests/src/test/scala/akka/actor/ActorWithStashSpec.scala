@@ -100,7 +100,7 @@ object ActorWithStashSpec {
 
 }
 
-class JavaActorWithStashSpec extends StashJavaAPI with JUnitSuiteLike
+// class JavaActorWithStashSpec extends StashJavaAPI with JUnitSuiteLike
 
 class ActorWithStashSpec extends AkkaSpec(ActorWithStashSpec.testConf) with DefaultTimeout with BeforeAndAfterEach {
   import ActorWithStashSpec._

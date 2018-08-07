@@ -14,7 +14,7 @@ public class ByteStringTest extends JUnitSuite {
   @Test
   public void testCreation() {
     final ByteString s1 = ByteString.fromString("");
-    final ByteString s2 = ByteString.fromInts(1, 2, 3);
+    // final ByteString s2 = ByteString.fromInts(1, 2, 3); // https://github.com/scala/bug/issues/11057
   }
 
   @Test
