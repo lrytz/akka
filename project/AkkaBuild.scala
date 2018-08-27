@@ -11,8 +11,6 @@ import com.typesafe.sbt.pgp.PgpKeys.publishSigned
 import sbt.Keys._
 import sbt._
 
-import scalafix.sbt.ScalafixPlugin.autoImport.scalafixDepedencies
-
 object AkkaBuild {
 
   val enableMiMa = true
@@ -89,12 +87,7 @@ object AkkaBuild {
   // -XDignore.symbol.file suppresses sun.misc.Unsafe warnings
   final val DefaultJavacOptions = Seq("-encoding", "UTF-8", "-Xlint:unchecked", "-XDignore.symbol.file")
 
-  lazy val scalafixSettings = Seq(
-    scalacOptions += "-Yrangepos",
-    scalafixDepedencies += "org.scala-lang.modules" % "scala-collection-migrations" % Dependencies.collectionCompatVersion
-  )
-
-  lazy val defaultSettings = scalafixSettings ++ resolverSettings ++
+  lazy val defaultSettings = resolverSettings ++
     // CustomReporter.ignoreWarnings ++
     TestExtras.Filter.settings ++
     Protobuf.settings ++ Seq[Setting[_]](
