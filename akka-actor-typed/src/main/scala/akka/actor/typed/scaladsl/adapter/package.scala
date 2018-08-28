@@ -5,7 +5,7 @@
 package akka.actor.typed
 package scaladsl
 
-import akka.actor.typed.internal.adapter._
+import akka.actor.typed.internal.adapter.{ PropsAdapter => _, _ }
 
 /**
  * Scala API: Adapters between typed and untyped actors and actor systems.
