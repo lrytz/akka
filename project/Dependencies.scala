@@ -20,7 +20,7 @@ object Dependencies {
   val scalaXmlVersion = "1.1.0"
   val aeronVersion = "1.9.1"
 
-  val collectionCompatVersion = "0.2.0-SNAPSHOT"
+  val collectionCompatVersion = "0.2.0"
 
   val Versions = Seq(
     crossScalaVersions := Seq("2.13.0-M4", "2.12.4", "2.11.12"),
