@@ -23,7 +23,7 @@ object Dependencies {
   val collectionCompatVersion = "0.2.0"
 
   val Versions = Seq(
-    crossScalaVersions := Seq("2.13.0-M4", "2.12.4", "2.11.12"),
+    crossScalaVersions := Seq("2.13.0-M5", "2.12.4", "2.11.12"),
     scalaVersion := System.getProperty("akka.build.scalaVersion", crossScalaVersions.value.head),
     scalaStmVersion := sys.props.get("akka.build.scalaStmVersion").getOrElse("0.9"),
     scalaCheckVersion := sys.props.get("akka.build.scalaCheckVersion").getOrElse(
@@ -33,7 +33,7 @@ object Dependencies {
       }),
     scalaTestVersion := {
       CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, n)) if n >= 13 => "3.0.6-SNAP1"
+        case Some((2, n)) if n >= 13 => "3.0.6-SNAP3"
         case _ => "3.0.4"
       }
     },
