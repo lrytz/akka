@@ -22,8 +22,8 @@ import akka.util.ByteString
 import akka.japi.Util.immutableSeq
 import akka.io.Inet.SocketOption
 
-import scala.compat.java8.OptionConverters._
-import scala.compat.java8.FutureConverters._
+import scala.jdk.OptionConverters.Ops._
+import scala.jdk.FutureConverters.Ops._
 import java.util.concurrent.CompletionStage
 import javax.net.ssl.SSLContext
 

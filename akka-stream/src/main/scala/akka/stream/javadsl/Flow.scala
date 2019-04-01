@@ -22,7 +22,7 @@ import akka.dispatch.ExecutionContexts
 import akka.stream.impl.fusing.LazyFlow
 
 import scala.annotation.unchecked.uncheckedVariance
-import scala.compat.java8.FutureConverters._
+import scala.jdk.FutureConverters.Ops._
 import scala.reflect.ClassTag
 
 object Flow {
@@ -224,7 +224,7 @@ object Flow {
   @Deprecated
   @deprecated("Use lazyInitAsync instead. (lazyInitAsync returns a flow with a more useful materialized value.)", "2.5.12")
   def lazyInit[I, O, M](flowFactory: function.Function[I, CompletionStage[Flow[I, O, M]]], fallback: function.Creator[M]): Flow[I, O, M] = {
-    import scala.compat.java8.FutureConverters._
+    import scala.jdk.FutureConverters.Ops._
     val sflow = scaladsl.Flow
       .fromGraph(new LazyFlow[I, O, M](t ⇒ flowFactory.apply(t).toScala.map(_.asScala)(ExecutionContexts.sameThreadExecutionContext)))
       .mapMaterializedValue(_ ⇒ fallback.create())
@@ -248,7 +248,7 @@ object Flow {
    * '''Cancels when''' downstream cancels
    */
   def lazyInitAsync[I, O, M](flowFactory: function.Creator[CompletionStage[Flow[I, O, M]]]): Flow[I, O, CompletionStage[Optional[M]]] = {
-    import scala.compat.java8.FutureConverters._
+    import scala.jdk.FutureConverters.Ops._
 
     val sflow = scaladsl.Flow.lazyInitAsync(() ⇒ flowFactory.create().toScala.map(_.asScala)(ExecutionContexts.sameThreadExecutionContext))
       .mapMaterializedValue(fut ⇒ fut.map(_.fold[Optional[M]](Optional.empty())(m ⇒ Optional.ofNullable(m)))(ExecutionContexts.sameThreadExecutionContext).toJava)

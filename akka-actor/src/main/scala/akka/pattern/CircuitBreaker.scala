@@ -24,7 +24,7 @@ import scala.util.control.NonFatal
 import scala.util.{ Failure, Success, Try }
 import akka.dispatch.ExecutionContexts.sameThreadExecutionContext
 
-import scala.compat.java8.FutureConverters
+import scala.jdk.FutureConverters
 
 /**
  * Companion object providing factory methods for Circuit Breaker which runs callbacks in caller's thread

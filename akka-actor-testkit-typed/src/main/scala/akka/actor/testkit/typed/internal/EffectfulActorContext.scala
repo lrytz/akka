@@ -15,7 +15,7 @@ import akka.actor.testkit.typed.Effect._
 
 import scala.concurrent.duration.{ Duration, FiniteDuration }
 import scala.reflect.ClassTag
-import scala.compat.java8.FunctionConverters._
+import scala.jdk.FunctionConverters.Ops._
 
 /**
  * INTERNAL API

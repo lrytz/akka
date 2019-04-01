@@ -13,7 +13,7 @@ object Dependencies {
   lazy val scalaTestVersion = settingKey[String]("The version of ScalaTest to use.")
   lazy val scalaStmVersion = settingKey[String]("The version of ScalaSTM to use.")
   lazy val scalaCheckVersion = settingKey[String]("The version of ScalaCheck to use.")
-  lazy val java8CompatVersion = settingKey[String]("The version of scala-java8-compat to use.")
+  // lazy val java8CompatVersion = settingKey[String]("The version of scala-java8-compat to use.")
   val junitVersion = "4.12"
   val sslConfigVersion = "0.2.4"
   val slf4jVersion = "1.7.25"
@@ -36,14 +36,14 @@ object Dependencies {
         case Some((2, n)) if n >= 13 => "3.0.6-SNAP3"
         case _ => "3.0.4"
       }
-    },
+    }/*,
     java8CompatVersion := {
       CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, n)) if n >= 13 ⇒ "0.9.0"
         case Some((2, n)) if n == 12 ⇒ "0.8.0"
         case _                       ⇒ "0.7.0"
       }
-    })
+    }*/)
 
   object Compile {
     // Compile
@@ -79,7 +79,7 @@ object Dependencies {
     val junit = "junit" % "junit" % junitVersion // Common Public License 1.0
 
     // For Java 8 Conversions
-    val java8Compat = Def.setting { "org.scala-lang.modules" %% "scala-java8-compat" % java8CompatVersion.value } // Scala License
+    // val java8Compat = Def.setting { "org.scala-lang.modules" %% "scala-java8-compat" % java8CompatVersion.value } // Scala License
 
     val aeronDriver = "io.aeron" % "aeron-driver" % aeronVersion // ApacheV2
     val aeronClient = "io.aeron" % "aeron-client" % aeronVersion // ApacheV2
@@ -142,7 +142,7 @@ object Dependencies {
   // TODO check if `l ++=` everywhere expensive?
   val l = libraryDependencies
 
-  val actor = l ++= Seq(config, collectionCompat, java8Compat.value)
+  val actor = l ++= Seq(config, collectionCompat /*, java8Compat.value*/)
 
   val testkit = l ++= Seq(Test.junit, Test.scalatest.value) ++ Test.metricsAll
 

@@ -249,14 +249,26 @@ object AskableActorRef {
   /**
    * INTERNAL API: for binary compatibility
    */
-  private[pattern] def ask$extension(actorRef: ActorRef, message: Any, timeout: Timeout): Future[Any] =
+  private[pattern] def ask$extension0(actorRef: ActorRef, message: Any, timeout: Timeout): Future[Any] =
     actorRef.internalAsk(message, timeout, ActorRef.noSender)
 
   /**
    * INTERNAL API: for binary compatibility
    */
-  private[pattern] def $qmark$extension(actorRef: ActorRef, message: Any, timeout: Timeout): Future[Any] =
+  private[pattern] def ask$extension1(actorRef: ActorRef, message: Any, timeout: Timeout, sender: ActorRef): Future[Any] =
+    actorRef.internalAsk(message, timeout, sender)
+
+  /**
+   * INTERNAL API: for binary compatibility
+   */
+  private[pattern] def $qmark$extension0(actorRef: ActorRef, message: Any, timeout: Timeout): Future[Any] =
     actorRef.internalAsk(message, timeout, ActorRef.noSender)
+
+  /**
+   * INTERNAL API: for binary compatibility
+   */
+  private[pattern] def $qmark$extension1(actorRef: ActorRef, message: Any, timeout: Timeout, sender: ActorRef): Future[Any] =
+    actorRef.internalAsk(message, timeout, sender)
 }
 
 /*
@@ -344,14 +356,26 @@ object AskableActorSelection {
   /**
    * INTERNAL API: for binary compatibility
    */
-  private[pattern] def ask$extension(actorSel: ActorSelection, message: Any, timeout: Timeout): Future[Any] =
+  private[pattern] def ask$extension0(actorSel: ActorSelection, message: Any, timeout: Timeout): Future[Any] =
     actorSel.internalAsk(message, timeout, ActorRef.noSender)
 
   /**
    * INTERNAL API: for binary compatibility
    */
-  private[pattern] def $qmark$extension(actorSel: ActorSelection, message: Any, timeout: Timeout): Future[Any] =
+  private[pattern] def ask$extension1(actorSel: ActorSelection, message: Any, timeout: Timeout, sender: ActorRef): Future[Any] =
+    actorSel.internalAsk(message, timeout, sender)
+
+  /**
+   * INTERNAL API: for binary compatibility
+   */
+  private[pattern] def $qmark$extension0(actorSel: ActorSelection, message: Any, timeout: Timeout): Future[Any] =
     actorSel.internalAsk(message, timeout, ActorRef.noSender)
+
+  /**
+   * INTERNAL API: for binary compatibility
+   */
+  private[pattern] def $qmark$extension1(actorSel: ActorSelection, message: Any, timeout: Timeout, sender: ActorRef): Future[Any] =
+    actorSel.internalAsk(message, timeout, sender)
 }
 
 /*

@@ -18,7 +18,7 @@ import scala.concurrent.duration.FiniteDuration
 import java.util.Comparator
 import java.util.concurrent.CompletionStage
 
-import scala.compat.java8.FutureConverters._
+import scala.jdk.FutureConverters.Ops._
 import scala.reflect.ClassTag
 
 /**

@@ -8,7 +8,7 @@ import akka.actor.typed.{ ActorRef, Behavior, Props }
 import akka.annotation.{ DoNotInherit, InternalApi }
 import akka.util.JavaDurationConverters._
 
-import scala.compat.java8.FunctionConverters._
+import scala.jdk.FunctionConverters.Ops._
 import scala.concurrent.duration.FiniteDuration
 
 /**

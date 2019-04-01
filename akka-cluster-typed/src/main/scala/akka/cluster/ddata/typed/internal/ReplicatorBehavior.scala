@@ -4,7 +4,7 @@
 
 package akka.cluster.ddata.typed.internal
 
-import scala.compat.java8.OptionConverters._
+import scala.jdk.OptionConverters.Ops._
 import scala.concurrent.duration._
 import scala.concurrent.duration.Duration
 

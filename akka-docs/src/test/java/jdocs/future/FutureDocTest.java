@@ -71,7 +71,7 @@ import static akka.pattern.PatternsCS.retry;
 import java.util.ArrayList;
 import java.util.List;
 
-import scala.compat.java8.FutureConverters;
+import scala.jdk.FutureConverters;
 
 import akka.testkit.AkkaJUnitActorSystemResource;
 import org.junit.ClassRule;

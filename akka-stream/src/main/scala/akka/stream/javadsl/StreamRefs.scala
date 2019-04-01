@@ -18,7 +18,7 @@ import akka.stream._
  */
 @ApiMayChange
 object StreamRefs {
-  import scala.compat.java8.FutureConverters._
+  import scala.jdk.FutureConverters.Ops._
 
   /**
    * A local [[Sink]] which materializes a [[SourceRef]] which can be used by other streams (including remote ones),

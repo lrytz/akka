@@ -22,11 +22,11 @@ import scala.collection.JavaConverters._
 import scala.collection.immutable
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ Future, Promise }
-import scala.compat.java8.OptionConverters._
+import scala.jdk.OptionConverters.Ops._
 import java.util.concurrent.CompletionStage
 import java.util.concurrent.CompletableFuture
 
-import scala.compat.java8.FutureConverters._
+import scala.jdk.FutureConverters.Ops._
 import scala.reflect.ClassTag
 
 /** Java API */

@@ -376,7 +376,7 @@ object ByteString {
       }
     }
 
-    protected override def writeReplace(): AnyRef = new SerializationProxy(this)
+    protected def writeReplace(): AnyRef = new SerializationProxy(this)
   }
 
   private[akka] object ByteStrings extends Companion {
@@ -611,7 +611,7 @@ object ByteString {
       }
     }
 
-    protected override def writeReplace(): AnyRef = new SerializationProxy(this)
+    protected def writeReplace(): AnyRef = new SerializationProxy(this)
   }
 
   @SerialVersionUID(1L)

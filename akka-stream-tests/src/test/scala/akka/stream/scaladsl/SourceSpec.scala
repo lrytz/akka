@@ -288,7 +288,7 @@ class SourceSpec extends StreamSpec with DefaultTimeout {
   }
 
   "Java Stream source" must {
-    import scala.compat.java8.FunctionConverters._
+    import scala.jdk.FunctionConverters.Ops._
     import java.util.stream.{ Stream, IntStream }
 
     def javaStreamInts = IntStream.iterate(1, { i: Int ⇒ i + 1 }.asJava)

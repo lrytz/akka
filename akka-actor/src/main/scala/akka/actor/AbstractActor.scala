@@ -234,8 +234,8 @@ abstract class AbstractActor extends Actor {
   @deprecated("Override preRestart with message parameter with Optional type instead", "2.5.0")
   @throws(classOf[Exception])
   override def preRestart(reason: Throwable, message: Option[Any]): Unit = {
-    import scala.compat.java8.OptionConverters._
-    preRestart(reason, message.asJava)
+    import scala.jdk.OptionConverters.Ops._
+    preRestart(reason, message.toJava)
   }
 
   /**
@@ -246,8 +246,8 @@ abstract class AbstractActor extends Actor {
    */
   @throws(classOf[Exception])
   def preRestart(reason: Throwable, message: Optional[Any]): Unit = {
-    import scala.compat.java8.OptionConverters._
-    super.preRestart(reason, message.asScala)
+    import scala.jdk.OptionConverters.Ops._
+    super.preRestart(reason, message.toScala)
   }
 
   /**

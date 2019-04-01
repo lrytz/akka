@@ -51,7 +51,7 @@ abstract class AsyncSerializerWithStringManifest(system: ExtendedActorSystem) ex
  * and blocks.
  */
 abstract class AsyncSerializerWithStringManifestCS(system: ExtendedActorSystem) extends AsyncSerializerWithStringManifest(system) {
-  import scala.compat.java8.FutureConverters._
+  import scala.jdk.FutureConverters.Ops._
 
   def toBinaryAsyncCS(o: AnyRef): CompletionStage[Array[Byte]]
 

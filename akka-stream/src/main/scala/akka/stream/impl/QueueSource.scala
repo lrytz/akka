@@ -12,7 +12,7 @@ import akka.stream.OverflowStrategies._
 import akka.stream._
 import akka.stream.stage._
 import akka.stream.scaladsl.SourceQueueWithComplete
-import scala.compat.java8.FutureConverters._
+import scala.jdk.FutureConverters.Ops._
 import scala.concurrent.{ Future, Promise }
 import scala.util.control.NonFatal
 

@@ -5,7 +5,7 @@
 package akka.cluster.ddata
 
 import akka.cluster.UniqueAddress
-import scala.compat.java8.OptionConverters._
+import scala.jdk.OptionConverters.Ops._
 import java.util.Optional
 
 /**

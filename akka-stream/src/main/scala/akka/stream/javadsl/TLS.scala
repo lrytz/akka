@@ -14,7 +14,7 @@ import akka.stream.TLSProtocol._
 import akka.util.ByteString
 import com.typesafe.sslconfig.akka.AkkaSSLConfig
 
-import scala.compat.java8.OptionConverters
+import scala.jdk.OptionConverters
 import scala.util.Try
 
 /**

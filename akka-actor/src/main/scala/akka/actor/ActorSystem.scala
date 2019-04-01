@@ -26,8 +26,8 @@ import java.util.Optional
 import akka.actor.setup.{ ActorSystemSetup, Setup }
 import akka.annotation.InternalApi
 
-import scala.compat.java8.FutureConverters
-import scala.compat.java8.OptionConverters._
+import scala.jdk.FutureConverters
+import scala.jdk.OptionConverters.Ops._
 
 object BootstrapSetup {
 
@@ -59,7 +59,7 @@ object BootstrapSetup {
    * @see [[BootstrapSetup]] for description of the properties
    */
   def create(classLoader: Optional[ClassLoader], config: Optional[Config], defaultExecutionContext: Optional[ExecutionContext]): BootstrapSetup =
-    apply(classLoader.asScala, config.asScala, defaultExecutionContext.asScala)
+    apply(classLoader.toScala, config.toScala, defaultExecutionContext.toScala)
 
   /**
    * Java  API: Short for using custom config but keeping default classloader and default execution context

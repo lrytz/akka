@@ -8,8 +8,8 @@ package internal
 import java.util.Optional
 import java.util.concurrent.{ CompletionStage, ConcurrentHashMap }
 
-import scala.compat.java8.OptionConverters._
-import scala.compat.java8.FutureConverters._
+import scala.jdk.OptionConverters.Ops._
+import scala.jdk.FutureConverters.Ops._
 import scala.concurrent.Future
 import akka.actor.{ InternalActorRef, Scheduler }
 import akka.actor.typed.ActorRef

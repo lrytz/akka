@@ -5,8 +5,8 @@
 package akka.actor
 
 import scala.concurrent.duration._
-import scala.compat.java8.FutureConverters._
-import scala.compat.java8.OptionConverters._
+import scala.jdk.FutureConverters.Ops._
+import scala.jdk.OptionConverters.Ops._
 import java.util.concurrent._
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
@@ -381,7 +381,7 @@ final class CoordinatedShutdown private[akka] (
    * The `Reason` for the shutdown as passed to the `run` method. `Optional.empty` if the shutdown
    * has not been started.
    */
-  def getShutdownReason(): Optional[Reason] = shutdownReason().asJava
+  def getShutdownReason(): Optional[Reason] = shutdownReason().toJava
 
   /**
    * Scala API: Run tasks of all phases. The returned
@@ -510,7 +510,7 @@ final class CoordinatedShutdown private[akka] (
    * It's safe to call this method multiple times. It will only run the shutdown sequence once.
    */
   def run(reason: Reason, fromPhase: Optional[String]): CompletionStage[Done] =
-    run(reason, fromPhase.asScala).toJava
+    run(reason, fromPhase.toScala).toJava
 
   @deprecated("Use the method with `reason` parameter instead", since = "2.5.8")
   def run(fromPhase: Optional[String]): CompletionStage[Done] =

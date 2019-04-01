@@ -14,13 +14,13 @@ import akka.stream.impl.{ LinearTraversalBuilder, SinkQueueAdapter }
 import akka.stream.{ javadsl, scaladsl, _ }
 import org.reactivestreams.{ Publisher, Subscriber }
 
-import scala.compat.java8.OptionConverters._
+import scala.jdk.OptionConverters.Ops._
 import scala.concurrent.ExecutionContext
 import scala.util.Try
 import java.util.concurrent.CompletionStage
 import scala.collection.immutable
 import scala.annotation.unchecked.uncheckedVariance
-import scala.compat.java8.FutureConverters._
+import scala.jdk.FutureConverters.Ops._
 
 /** Java API */
 object Sink {

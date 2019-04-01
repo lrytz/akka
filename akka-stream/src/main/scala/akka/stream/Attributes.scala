@@ -16,7 +16,7 @@ import java.net.URLEncoder
 import akka.annotation.InternalApi
 import akka.stream.impl.TraversalBuilder
 
-import scala.compat.java8.OptionConverters._
+import scala.jdk.OptionConverters.Ops._
 import akka.util.{ ByteString, OptionVal }
 
 import scala.concurrent.duration.FiniteDuration

@@ -21,7 +21,7 @@ import akka.routing.MurmurHash
 import akka.util.{ Helpers, JavaDurationConverters, Timeout }
 import akka.dispatch.ExecutionContexts
 
-import scala.compat.java8.FutureConverters
+import scala.jdk.FutureConverters
 import scala.collection.compat._
 
 /**

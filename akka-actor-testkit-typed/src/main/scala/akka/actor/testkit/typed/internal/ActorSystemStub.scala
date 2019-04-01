@@ -13,7 +13,7 @@ import akka.util.Timeout
 import akka.{ actor ⇒ a }
 import com.typesafe.config.ConfigFactory
 
-import scala.compat.java8.FutureConverters
+import scala.jdk.FutureConverters
 import scala.concurrent._
 
 /**

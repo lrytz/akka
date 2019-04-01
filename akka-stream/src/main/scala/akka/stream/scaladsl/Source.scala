@@ -24,7 +24,7 @@ import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ Future, Promise }
 
 import akka.stream.stage.GraphStageWithMaterializedValue
-import scala.compat.java8.FutureConverters._
+import scala.jdk.FutureConverters.Ops._
 
 import akka.stream.impl.fusing.GraphStageModule
 
