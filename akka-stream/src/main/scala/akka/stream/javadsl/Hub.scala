@@ -80,7 +80,7 @@ object MergeHub {
       .sourceWithDraining[T](perProducerBufferSize)
       .mapMaterializedValue {
         case (sink, draining) =>
-          akka.japi.Pair(sink.asJava[T], new DrainingControlImpl(draining): DrainingControl)
+          akka.japi.Pair(sink.asJava, new DrainingControlImpl(draining): DrainingControl)
       }
       .asJava
   }
