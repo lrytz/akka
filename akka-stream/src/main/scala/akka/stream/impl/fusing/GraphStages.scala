@@ -339,9 +339,6 @@ import akka.stream.stage._
           super.onDownstreamFinish(cause)
         }
 
-        override def postStop(): Unit =
-          if (!sinkIn.isClosed) sinkIn.cancel()
-
         def onFutureSourceCompleted(result: Try[Graph[SourceShape[T], M]]): Unit = {
           result
             .map { graph =>

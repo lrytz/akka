@@ -23,10 +23,9 @@ import akka.stream.impl.StreamLayout.AtomicModule
 
   def create(context: MaterializationContext): (Publisher[_ <: Out], Mat)
 
-  // TODO: Amendshape changed the name of ports. Is it needed anymore?
-
   def attributes: Attributes
 
+  // TODO: Amendshape changed the name of ports. Is it needed anymore?
   protected def amendShape(attr: Attributes): SourceShape[Out] = {
     val thisN = traversalBuilder.attributes.nameOrDefault(null)
     val thatN = attr.nameOrDefault(null)
